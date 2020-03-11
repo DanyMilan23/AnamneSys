@@ -1,9 +1,12 @@
-import Head from 'next/head'
+import React from 'react';
+import Layout from '../components/Layout/Layout'
 
 const Home = () => (
-  <div>
-    <h1>Hola</h1>
-  </div>
+  <>
+      <Layout>
+          <h1>hello </h1>
+      </Layout>
+  </>
 )
 
 export default Home
