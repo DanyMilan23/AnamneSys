@@ -19,9 +19,9 @@ function Copyright() {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
+    marginTop:'20px',
     flexDirection: 'column',
-    minHeight: '100vh',
+    minHeight: '10vh',
   },
   main: {
     marginTop: theme.spacing(8),
