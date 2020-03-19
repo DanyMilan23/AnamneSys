@@ -49,7 +49,7 @@ const prueba = props => {
       <Container fixed>
         <Grid
           container
-          spacing={3}
+          spacing={2}
           direction="row"
           justify="flex-start"
           alignItems="flex-start"
@@ -193,18 +193,19 @@ const prueba = props => {
                 </Paper>
               </Grid>
             </Grid>
-          </Grid>
-          <Grid item xs={12} sm={2}>
+          </Grid> 
+          <Grid item xs={12} sm={2}/>
+          <Grid item xs={12} sm={3}>
             <Button variant="contained" color="primary">
               Historial Completo
             </Button>
           </Grid>
-          <Grid item xs={12} sm={2}>
+          <Grid item xs={12} sm={3}>
             <Button variant="contained" color="primary">
               Atender Paciente
             </Button>
           </Grid>
-          <Grid item xs={12} sm={2}>
+          <Grid item xs={12} sm={4}>
             <Button variant="contained" color="primary">
               Actualizar Informacion
             </Button>
