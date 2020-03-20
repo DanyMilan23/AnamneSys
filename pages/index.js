@@ -4,8 +4,8 @@ import Login from '../components/prueba'
 const Home = () => (
   <>
     <Layout>
-        <h1>hi</h1>
-        {/*<Login>hello </Login>*/}
+       
+       <Login>hello </Login>
     </Layout>
   
   </>
