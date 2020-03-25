@@ -10,6 +10,8 @@ import TextField from "@material-ui/core/TextField";
 import Chip from "@material-ui/core/Chip";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Button from "@material-ui/core/Button";
+//layout
+import Layout from "../components/layout/layout"
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -31,6 +33,7 @@ function nuevo_historial(props) {
   return (
     <>
       <CssBaseline />
+      <Layout>
       <Container fixed>
         <Grid
           container
@@ -164,6 +167,7 @@ function nuevo_historial(props) {
           </Grid>
         </Grid>
       </Container>
+      </Layout>
     </>
   );
 }

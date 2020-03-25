@@ -16,7 +16,8 @@ import Fab from "@material-ui/core/Fab";
 import PropTypes from "prop-types";
 //iconos
 import SearchIcon from "@material-ui/icons/Search";
-//imagen
+//layout
+import Layout from "../components/layout/layout"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -46,6 +47,7 @@ const prueba = props => {
   return (
     <>
       <CssBaseline />
+      <Layout>
       <Container fixed>
         <Grid
           container
@@ -212,6 +214,7 @@ const prueba = props => {
           </Grid>
         </Grid>
       </Container>
+      </Layout>
     </>
   );
 };

@@ -1,6 +1,7 @@
 import React from "react";
 import MaterialTable from "material-table";
-import Historial from "./historial";
+import Historial from "../components/historial";
+import Layout from "../components/layout/layout"
 
 const historial_completo = () => {
   const title = [
@@ -35,6 +36,7 @@ const historial_completo = () => {
   ];
   return (
     <>
+      <Layout>
       <MaterialTable
         title="Historial Completo"
         columns={title}
@@ -56,7 +58,8 @@ const historial_completo = () => {
           }
         ]}
       />
-    </>
+      </Layout>
+    </> 
   );
 };
 
