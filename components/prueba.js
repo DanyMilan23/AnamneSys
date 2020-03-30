@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState,useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
@@ -10,6 +10,21 @@ import TextField from "@material-ui/core/TextField";
 import Chip from "@material-ui/core/Chip";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Button from "@material-ui/core/Button";
+import MaterialTable from "material-table";
+//inputs
+import Fab from "@material-ui/core/Fab";
+//iconos
+import SearchIcon from "@material-ui/icons/Search";
+//datetime
+import DateFnsUtils from "@date-io/date-fns";
+//import { StaticDatePicker } from "@material-ui/pickers";
+import {
+  DatePicker,
+  TimePicker,
+  MuiPickersUtilsProvider
+} from "@material-ui/pickers";
+//MediaQuerys
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -28,6 +43,50 @@ const useStyles = makeStyles(theme => ({
 
 function nuevo_historial(props) {
   const classes = useStyles();
+  const matches = useMediaQuery("(min-width:960px)");
+  const [date, changeDate] = useState(new Date());
+  const [source,setSource]=useState(false);
+   const title = [
+    {
+      title: "Doctor",
+      field: "imageUrl",
+      render: rowData => (
+        <div>
+          <img
+            src={rowData.imageUrl}
+            alt=""
+            style={{ width: 40, borderRadius: "50%" }}
+          />
+          <b style={{ verticalAlign: "top", paddingLeft: "20px" }}>
+            {rowData.name}
+          </b>
+        </div>
+      )
+    },
+    { title: "Enfermedad Actual", field: "enfermedad" },
+    { title: "Fecha", field: "fecha", type: "date" }
+  ];
+
+  const data = [
+    { name: "Mehmet", surname: "Xd", birthYear: 1987, birthCity: 63 },
+    {
+      name: "Zerya Betül",
+      surname: "Baran",
+      birthYear: 2017,
+      birthCity: 34
+    }
+  ];
+
+  useEffect(() => {
+      setSource(matches);
+  }, [matches]);
+  //960 es el limite
+  const pacientes = [
+    { title: "The Shawshank Redemption", year: 1994 },
+    { title: "The Godfather", year: 1972 }
+  ];
+  //const [date, changeDate] = useState(new Date());
+  //const [selectedDate, handleDateChange] = useState(new Date());
   return (
     <>
       <CssBaseline />
@@ -40,7 +99,8 @@ function nuevo_historial(props) {
           alignItems="flex-start"
         >
           <Grid item xs={12} sm={12}>
-            <h1>Nuevo Historial</h1>
+            <h1>Atencion de Paciente</h1>
+            <span>{`(min-width:600px) matches: ${matches}`}</span>
           </Grid>
           <Grid item xs={12} sm={12}>
             <Paper className={classes.paper} elevation={3}>
@@ -51,116 +111,73 @@ function nuevo_historial(props) {
                 justify="flex-start"
                 alignItems="flex-start"
               >
-                <Grid item xs={12} sm={12}>
-                  <TextField
-                    id="enfermedad_actual"
-                    label="Enfermedad Actual"
-                    multiline
-                    rows="1"
-                    variant="outlined"
-                    margin="dense"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6} sm={6}>
-                  <TextField
-                    id="resultado_laboratorio"
-                    label="Resultado de laboratorio"
-                    multiline
-                    rows="5"
-                    variant="outlined"
-                    margin="dense"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6} sm={6}>
-                  <TextField
-                    id="examen_fisico"
-                    label="Examen Fisico"
-                    multiline
-                    rows="5"
-                    variant="outlined"
-                    margin="dense"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12} sm={12}>
-                  <TextField
-                    id="diagnostico_presuntivo"
-                    label="Diagnostico Presuntivo"
-                    multiline
-                    rows="3"
-                    variant="outlined"
-                    margin="dense"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12} sm={12}>
-                  <TextField
-                    id="razon_consulta"
-                    label="Razon de la consulta"
-                    multiline
-                    rows="1"
-                    variant="outlined"
-                    margin="dense"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={6} sm={6}>
+                <Grid item xs={10} sm={6}>
                   <Autocomplete
-                    multiple
-                    id="fixed-tags-demo"
-                    options={top100Films}
-                    onChange={(event, value) => {
-                      guardarLista(value);
-                    }}
+                    id="combo-box-demo"
+                    options={pacientes}
                     getOptionLabel={option => option.title}
-                    renderTags={(value, getTagProps) =>
-                      value.map((option, index) => (
-                        <Chip
-                          label={option.title}
-                          {...getTagProps({ index })}
-                        />
-                      ))
-                    }
+                    style={{ width: "auto" }}
                     renderInput={params => (
                       <TextField
                         {...params}
-                        label="Fixed tag"
+                        label="Busqueda de Pacientes"
                         variant="outlined"
-                        placeholder="Favorites"
                       />
                     )}
                   />
                 </Grid>
-                <Grid item xs={6} sm={6}>
-                  <h2 className={classes.titulos}>Diagnostico</h2>
-                  <p>lorem ipsum</p>
-                  <p>lorem ipsum</p>
-                  <p>lorem ipsum</p>
-                  <p>lorem ipsum</p>
-                  <p>lorem ipsum</p>
-                  <p>lorem ipsum</p>
+                <Grid item xs={1} sm={1}>
+                  <Fab color="primary" aria-label="add">
+                    <SearchIcon />
+                  </Fab>
                 </Grid>
-                <Grid item xs={6} sm={6}>
-                  <TextField
-                    id="diagnostico_final"
-                    label="Diagnostico final"
-                    multiline
-                    rows="3"
-                    variant="outlined"
-                    margin="dense"
-                    fullWidth
-                  />
+                <Grid item xs={2} sm={2}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                       <TimePicker
+                          variant="inline"
+                          label="Inline mode"
+                          value={date}
+                          onChange={changeDate}
+                        />
+                  </MuiPickersUtilsProvider>
                 </Grid>
-                <Grid item xs={6} sm={6}>
-                  <Button variant="contained" color="primary">
-                    Guardar Historial
-                  </Button>
+                <Grid item xs={2} sm={2}>
+                  <Button variant="contained" color="primary">Guardar</Button>
                 </Grid>
+                <Grid item xs={12} sm={3}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    {source ? (
+                      <DatePicker
+                        autoOk
+                        variant="static"
+                        openTo="date"
+                        value={date}
+                        onChange={changeDate}
+                      />
+                    ) : (
+                      <DatePicker
+                         variant="inline"
+                          label="Basic example"
+                          value={date}
+                          onChange={changeDate}
+                      />
+                    )}
+                  </MuiPickersUtilsProvider>
+                </Grid>
+                <Grid item xs={1} sm={1}></Grid>
+                <Grid item xs={7} sm={7}>
+                <MaterialTable
+                  title="Historial Completo"
+                  columns={title}
+                  data={data}
+                 
+                />
+                </Grid>
+                
+                  
+                
               </Grid>
             </Paper>
-            
           </Grid>
         </Grid>
       </Container>
