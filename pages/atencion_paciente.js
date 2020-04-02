@@ -5,17 +5,19 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import PropTypes from "prop-types";
 //components
 import TextField from "@material-ui/core/TextField";
+import Chip from "@material-ui/core/Chip";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import Fab from "@material-ui/core/Fab";
 import Button from "@material-ui/core/Button";
+import MaterialTable from "material-table";
+//inputs
+import Fab from "@material-ui/core/Fab";
 //iconos
 import SearchIcon from "@material-ui/icons/Search";
-import MaterialTable from "material-table";
 //datetime
 import DateFnsUtils from "@date-io/date-fns";
+//import { StaticDatePicker } from "@material-ui/pickers";
 import {
   DatePicker,
   TimePicker,
@@ -25,33 +27,23 @@ import {
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1
-  },
   paper: {
     padding: theme.spacing(2),
     textAlign: "flex-start",
     color: theme.palette.text.secondary,
     height: "auto"
   },
-  imagen: {
-    width: "auto",
-    height: "auto"
-  },
   titulos: {
     textAlign: "center"
+  },
+  textField: {
+    width: "auto"
   }
 }));
-function atencion_caja(props) {
+
+function atencion_paciente(props) {
   const classes = useStyles();
-  const pacientes = [
-    { title: "The Shawshank Redemption", year: 1994 },
-    { title: "The Godfather", year: 1972 }
-  ];
   const matches = useMediaQuery("(min-width:960px)");
-  useEffect(() => {
-    setSource(matches);
-  }, [matches]);
   const [date, changeDate] = useState(new Date());
   const [source, setSource] = useState(false);
   const title = [
@@ -84,6 +76,17 @@ function atencion_caja(props) {
       birthCity: 34
     }
   ];
+
+  useEffect(() => {
+    setSource(matches);
+  }, [matches]);
+  //960 es el limite
+  const pacientes = [
+    { title: "The Shawshank Redemption", year: 1994 },
+    { title: "The Godfather", year: 1972 }
+  ];
+  //const [date, changeDate] = useState(new Date());
+  //const [selectedDate, handleDateChange] = useState(new Date());
   return (
     <>
       <CssBaseline />
@@ -143,19 +146,6 @@ function atencion_caja(props) {
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={3}>
-                <Autocomplete
-                    id="combo-box-demo"
-                    options={pacientes}
-                    getOptionLabel={option => option.title}
-                    style={{ width: "auto" }}
-                    renderInput={params => (
-                      <TextField
-                        {...params}
-                        label="Busqueda de Doctores"
-                        variant="outlined"
-                      />
-                    )}
-                  />
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     {source ? (
                       <DatePicker
@@ -191,5 +181,11 @@ function atencion_caja(props) {
     </>
   );
 }
-
-export default atencion_caja;
+const top100Films = [
+  { title: "The Shawshank Redemption", year: 1994 },
+  { title: "The Godfather", year: 1972 },
+  { title: "The Godfather: Part II", year: 1974 },
+  { title: "The Dark Knight", year: 2008 },
+  { title: "12 Angry Men", year: 1957 }
+];
+export default atencion_paciente;

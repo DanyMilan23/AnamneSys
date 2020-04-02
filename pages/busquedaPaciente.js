@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const prueba = props => {
+const busqueda_paciente = props => {
   const classes = useStyles();
   const pacientes = [
     { title: "The Shawshank Redemption", year: 1994 },
@@ -219,6 +219,6 @@ const prueba = props => {
   );
 };
 
-prueba.propTypes = {};
+busqueda_paciente.propTypes = {};
 
-export default prueba;
+export default busqueda_paciente;
