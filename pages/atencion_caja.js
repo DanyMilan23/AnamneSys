@@ -23,6 +23,8 @@ import {
 } from "@material-ui/pickers";
 //MediaQuerys
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+//layout
+import Layout from '../components/layout/layout'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -56,14 +58,14 @@ function atencion_caja(props) {
   const [source, setSource] = useState(false);
   const title = [
     {
-      title: "Doctor",
+      title: "Paciente",
       field: "imageUrl",
       render: rowData => (
         <div>
           <img
             src={rowData.imageUrl}
             alt=""
-            style={{ width: 40, borderRadius: "50%" }}
+            style={{ width: 40,height:40, borderRadius: "50%" }}
           />
           <b style={{ verticalAlign: "top", paddingLeft: "20px" }}>
             {rowData.name}
@@ -71,22 +73,20 @@ function atencion_caja(props) {
         </div>
       )
     },
-    { title: "Enfermedad Actual", field: "enfermedad" },
-    { title: "Fecha", field: "fecha", type: "date" }
+    { title: "Hora", field: "time",type:"time" },
+    { title: "Servicio", field: "servicio"}
   ];
 
   const data = [
-    { name: "Mehmet", surname: "Xd", birthYear: 1987, birthCity: 63 },
-    {
-      name: "Zerya Betül",
-      surname: "Baran",
-      birthYear: 2017,
-      birthCity: 34
-    }
+    { name: "Ximena Jordan", servicio: "Consulta", time:"20:20",imageUrl:"https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTQ60ufmFsPeBQCj-o_t3GDfRDQSGEkc_0o_kXoXo-Qb_pnxSgX" },
+    { name: "Natalia Ayala", servicio: "Consulta", time:"20:50",imageUrl:"https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTQ60ufmFsPeBQCj-o_t3GDfRDQSGEkc_0o_kXoXo-Qb_pnxSgX" },
+    { name: "Andrea Angulo", servicio: "Re Consulta", time:"21:20",imageUrl:"https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTQ60ufmFsPeBQCj-o_t3GDfRDQSGEkc_0o_kXoXo-Qb_pnxSgX" },
+
   ];
   return (
     <>
       <CssBaseline />
+      <Layout>
       <Container fixed>
         <Grid
           container
@@ -109,7 +109,7 @@ function atencion_caja(props) {
               >
                 <Grid item xs={10} sm={6}>
                   <Autocomplete
-                    id="combo-box-demo"
+                 
                     options={pacientes}
                     getOptionLabel={option => option.title}
                     style={{ width: "auto" }}
@@ -144,7 +144,6 @@ function atencion_caja(props) {
                 </Grid>
                 <Grid item xs={12} sm={3}>
                 <Autocomplete
-                    id="combo-box-demo"
                     options={pacientes}
                     getOptionLabel={option => option.title}
                     style={{ width: "auto" }}
@@ -188,6 +187,7 @@ function atencion_caja(props) {
           </Grid>
         </Grid>
       </Container>
+      </Layout>
     </>
   );
 }

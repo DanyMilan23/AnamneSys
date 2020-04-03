@@ -25,6 +25,7 @@ import {
 } from "@material-ui/pickers";
 //MediaQuerys
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import Layout from '../components/layout/layout'
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -90,6 +91,7 @@ function atencion_paciente(props) {
   return (
     <>
       <CssBaseline />
+      <Layout>
       <Container fixed>
         <Grid
           container
@@ -178,6 +180,7 @@ function atencion_paciente(props) {
           </Grid>
         </Grid>
       </Container>
+      </Layout>
     </>
   );
 }
