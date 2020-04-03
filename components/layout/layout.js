@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from './header';
-import Footer from './footer';
+import HeaderPrincipal from './header';
+import FooterFinal from './footer';
 import Head from 'next/head';
 
 const Layout = props => {
@@ -15,11 +15,11 @@ const Layout = props => {
                 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
             </Head>
 
-            <Header />
+            <HeaderPrincipal />
             <main>
                 {props.children}
             </main>
-            <Footer/>
+            <FooterFinal/>
         </>
      );
 }
