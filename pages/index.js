@@ -1,13 +1,9 @@
 import React from 'react';
 import Layout from '../components/Layout/Layout'
-import Login from '../components/prueba'
+import Login from '../components/Login'
 const Home = () => (
   <>
-    <Layout>
-       
-       <Login>hello </Login>
-    </Layout>
-  
+    <Login/> 
   </>
 )
 
