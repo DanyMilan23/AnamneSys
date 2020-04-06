@@ -11,6 +11,7 @@ import useAutenticacion from '../hooks/useAutenticacion';
 
 const MyApp = props => {
    const usuario = useAutenticacion();
+   console.log(usuario);
    const { Component, pageProps } = props;
   useEffect(() => { 
     // Remove the server-side injected CSS.
@@ -19,29 +20,25 @@ const MyApp = props => {
       jssStyles.parentElement.removeChild(jssStyles);
     }
   })
-    return (
-      <React.Fragment>
-        <Head>
-          <title>AnamneSys</title>
-          <meta
-            name="viewport"
-            content="minimum-scale=1, initial-scale=1, width=device-width"
-          />
-        </Head>
+  return (
         <FirebaseContext.Provider
             value={{
                 firebase,
                 usuario
             }}
         >
-        <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <Component {...pageProps} />
-        </ThemeProvider>
+          <ThemeProvider theme={theme}>
+            <Component {...pageProps} />
+          </ThemeProvider>
         </FirebaseContext.Provider>
-      </React.Fragment>
-    );
+    )
   
 }
 export default MyApp;
+/*<Head>
+          <title>AnamneSys</title>
+          <meta
+            name="viewport"
+            content="minimum-scale=1, initial-scale=1, width=device-width"
+          />
+        </Head>*/

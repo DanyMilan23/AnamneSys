@@ -83,7 +83,7 @@ export default function SignInSide() {
   async function iniciarSesion() {
     try {
       await firebase.login(email, password);
-      Router.push('/busquedaPaciente');
+      Router.push('/main');
     } catch (error) {
       console.error('Hubo un error al autenticar el usuario ', error.message);
       guardarError(error.message);
