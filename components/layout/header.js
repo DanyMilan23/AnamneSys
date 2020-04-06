@@ -6,6 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Drawer from "@material-ui/core/Drawer";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import Avatar from '@material-ui/core/Avatar';
 //Componentes de listas
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -150,16 +151,14 @@ export default function MenuAppBar({ datos }) {
           <Typography variant="h6" className={classes.title}>
             AnamneSys
           </Typography>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={e => {
-              e.preventDefault();
-              console.log(datos[0].type);
-            }}
-          >
-            Mostrar
-          </Button>
+          {/*datos != null ? (
+            <Typography variant="h6" className={classes.title}>
+              Bienvenido Dr. {datos[0].last_name}
+            </Typography>
+          ) : null*/}
+          <Typography variant="h6" className={classes.title}>
+            Bienvenido Dr.{usuario.displayName}
+          </Typography>
           <Button
             variant="contained"
             color="secondary"
@@ -170,11 +169,7 @@ export default function MenuAppBar({ datos }) {
           >
             Cerrar Sesion
           </Button>
-          {datos != null ? (
-            <h1>{datos[0].first_name}</h1>
-          ) : (
-            <h1>No se puede</h1>
-          )}
+          <Avatar alt="Remy Sharp" src={usuario.photoURL} />
         </Toolbar>
       </AppBar>
       <Drawer open={menu.left} onClose={toggleDrawer("left", false)}>
