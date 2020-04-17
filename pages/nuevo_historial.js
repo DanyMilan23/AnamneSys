@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useContext }  from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
@@ -12,6 +12,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import Button from "@material-ui/core/Button";
 //layout
 import Layout from "../components/layout/layout"
+import useSintomas from "../hooks/useSintomas"; 
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -30,6 +31,9 @@ const useStyles = makeStyles(theme => ({
 
 function nuevo_historial(props) {
   const classes = useStyles();
+  const { sintomas } = useSintomas();
+  console.log(sintomas)
+
   return (
     <>
       <CssBaseline />
@@ -113,11 +117,11 @@ function nuevo_historial(props) {
                   <Autocomplete
                     multiple
                     id="fixed-tags-demo"
-                    options={top100Films}
+                    options={sintomas}
                     onChange={(event, value) => {
                       guardarLista(value);
                     }}
-                    getOptionLabel={option => option.title}
+                    getOptionLabel={option => option.name}
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => (
                         <Chip
@@ -157,7 +161,7 @@ function nuevo_historial(props) {
                   />
                 </Grid>
                 <Grid item xs={6} sm={6}>
-                  <Button variant="contained" color="primary">
+                  <Button variant="contained" color="primary" >
                     Guardar Historial
                   </Button>
                 </Grid>
