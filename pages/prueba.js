@@ -1,10 +1,10 @@
 import React from 'react';
-import Prueba from './atencion_caja';
+import Prueba from './atencion_paciente';
 
 function prueba(props) {
     return (
         <>
-          <Prueba/>  
+          <Prueba/>   
         </>
     );
 }

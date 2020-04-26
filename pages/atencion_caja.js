@@ -32,9 +32,6 @@ import usePacientes from "../hooks/usePacientes";
 import useDoctores from "../hooks/useDoctores";
 import useServices from "../hooks/useServices";
 import useCitas from "../hooks/useCitas";
-// validaciones
-import useValidacion from "../hooks/useValidacion";
-import validarNuevaFicha from "../validacion/validarNuevaFicha";
 //context
 import { FirebaseContext } from "../firebase";
 //estilos

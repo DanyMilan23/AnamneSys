@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,  useContext  } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
@@ -26,6 +26,13 @@ import {
 //MediaQuerys
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Layout from '../components/layout/layout'
+//Custom hooks
+import useUsuario from "../hooks/useUsuario"
+import usePacientes from "../hooks/usePacientes";
+import useServices from "../hooks/useServices";
+import useCitas from "../hooks/useCitas";
+//context
+import { FirebaseContext } from "../firebase";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -44,55 +51,147 @@ const useStyles = makeStyles(theme => ({
 
 function atencion_paciente(props) {
   const classes = useStyles();
+  const { usuario, firebase } = useContext(FirebaseContext);
+  //leer de la base de datos los pacientes
+  const { pacientes } = usePacientes();
+  const { services } = useServices();
+   //cargar el autocomplete pacientes
+  let pacientesData = [];
+  const Data1 = pacientes.map((paciente) => {
+    pacientesData.push({
+      title:
+        paciente.ci + "  " + paciente.first_name + "  " + paciente.last_name,
+      id: paciente.id,
+      data: paciente,
+    });
+  });
+  //cargar el autocomplete service
+  let servicesData = [];
+  const Data3 = services.map((service) => {
+    servicesData.push({
+      title: service.name + "  " + service.cost + " Bs",
+      id: service.id,
+      data: service,
+    });
+  });
+  //state
+  const [citas, guardarCitas] = useState([{
+      patient: "",
+      service: "",
+      date: "",
+      imageUrl:"",
+    }]);
   const matches = useMediaQuery("(min-width:960px)");
   const [date, changeDate] = useState(new Date());
   const [source, setSource] = useState(false);
+  const [error, guardarError] = useState(false);
+  const [ficha, setFicha] = useState({
+    patient: "",
+    doctor: "",
+    imagenUrl: "",
+    service: "",
+  });
+  //titles para el table
   const title = [
     {
-      title: "Doctor",
+      title: "Paciente",
       field: "imageUrl",
-      render: rowData => (
+      render: (rowData) => (
         <div>
           <img
             src={rowData.imageUrl}
             alt=""
-            style={{ width: 40, borderRadius: "50%" }}
+            style={{ width: 40, height: 40, borderRadius: "50%" }}
           />
           <b style={{ verticalAlign: "top", paddingLeft: "20px" }}>
-            {rowData.name}
+            {rowData.patient}
           </b>
         </div>
-      )
+      ),
     },
-    { title: "Enfermedad Actual", field: "enfermedad" },
-    { title: "Fecha", field: "fecha", type: "date" }
+    { title: "Hora", field: "date", type: "time" },
+    { title: "Servicio", field: "service" },
   ];
-
-  const data = [
-    { name: "Mehmet", surname: "Xd", birthYear: 1987, birthCity: 63 },
-    {
-      name: "Zerya Betül",
-      surname: "Baran",
-      birthYear: 2017,
-      birthCity: 34
+  //function guardar
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    async function crearFicha() {
+      // si el usuario no esta autenticado llevar al login
+      if (!usuario) {
+        return router.push("/");
+      }
+      // crear el objeto de nuevo producto
+      const fichaData = {
+        patient: ficha.patient,
+        doctor: ficha.doctor,
+        imageUrl: ficha.imagenUrl,
+        date: date,
+        service: ficha.service,
+        create: Date.now(),
+      };
+      // insertarlo en la base de datos
+      firebase.db
+        .collection("appointment_management")
+        .add(fichaData)
+        .then(function (docRef) {
+          alert("Document written with ID: ", docRef.id);
+        })
+        .catch(function (error) {
+          alert("Error adding document: ", error);
+        });
+      return router.push('/main');
     }
-  ];
-
+    // validar
+    if (
+      ficha.patient.trim() === "" ||
+      ficha.doctor.trim() === "" ||
+      ficha.imagenUrl.trim() === "" ||
+      ficha.service.trim() === ""
+    ) {
+      guardarError(true);
+      return;
+    }
+    crearFicha();
+  };
+  //Media querys
   useEffect(() => {
     setSource(matches);
   }, [matches]);
-  //960 es el limite
-  const pacientes = [
-    { title: "The Shawshank Redemption", year: 1994 },
-    { title: "The Godfather", year: 1972 }
-  ];
-  //const [date, changeDate] = useState(new Date());
-  //const [selectedDate, handleDateChange] = useState(new Date());
+  //fichas en tiempo real 
+  useEffect(() => { 
+    actualizarCitas(date);
+    console.log(citas);
+  }, [date]);
+  let citasData=[];
+  function actualizarCitas(fecha){
+    const fechaInicio=new Date(fecha.getFullYear()+ '-'+(fecha.getMonth()+1)+'-'+fecha.getDate());
+    const fechaFin=new Date(fecha.getFullYear()+ '-'+(fecha.getMonth()+1)+'-'+(fecha.getDate()+1));
+    firebase.db.collection('appointment_management') .where("date", ">=",fechaInicio).where("date", "<=",fechaFin).get()
+    .then((querySnapshot)=> {      
+        querySnapshot.forEach((doc)=> {
+            const tiempo =doc.data().date
+            citasData.push({
+                id:doc.id,
+                patient:doc.data().patient,
+                doctor:doc.data().doctor,
+                imageUrl:doc.data().imageUrl,
+                date:new Date(tiempo * 1000),
+                service:doc.data().service,
+                create:doc.data().create,
+            })
+            guardarCitas(citasData);
+        })
+    })
+    .catch(function(error) {
+        console.log("Error getting documents: ", error);
+    });
+  }
   return (
     <>
       <CssBaseline />
       <Layout>
       <Container fixed>
+        <form className={classes.form} noValidate onSubmit={handleSubmit}>
         <Grid
           container
           spacing={1}
@@ -114,8 +213,9 @@ function atencion_paciente(props) {
               >
                 <Grid item xs={10} sm={6}>
                   <Autocomplete
-                    id="combo-box-demo"
-                    options={pacientes}
+                    id="patient"
+                    name="patient"
+                    options={pacientesData}
                     getOptionLabel={option => option.title}
                     style={{ width: "auto" }}
                     renderInput={params => (
@@ -148,6 +248,20 @@ function atencion_paciente(props) {
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={3}>
+                   <Autocomplete
+                    id="service"
+                    name="service"
+                    options={servicesData}
+                    getOptionLabel={option => option.title}
+                    style={{ width: "auto" }}
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        label="Servicios"
+                        variant="outlined"
+                      />
+                    )}
+                  />
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     {source ? (
                       <DatePicker
@@ -160,7 +274,7 @@ function atencion_paciente(props) {
                     ) : (
                       <DatePicker
                         variant="inline"
-                        label="Basic example"
+                        label="Hora"
                         value={date}
                         onChange={changeDate}
                       />
@@ -170,15 +284,16 @@ function atencion_paciente(props) {
                 <Grid item xs={1} sm={1}></Grid>
                 <Grid item xs={7} sm={7}>
                   <MaterialTable
-                    title="Historial Completo"
+                    title="Citas"
                     columns={title}
-                    data={data}
+                    data={citas}
                   />
                 </Grid>
               </Grid>
             </Paper>
           </Grid>
         </Grid>
+        </form>
       </Container>
       </Layout>
     </>
