@@ -59,13 +59,10 @@ const useStyles = makeStyles((theme) => ({
 
 function atencion_caja(props) {
   const classes = useStyles();
-  const d=new Date();
-  const e=new Date(d.getFullYear()+ '-'+(d.getMonth()+1)+'-'+d.getDate())
   //leer de la base de datos los pacientes
   const { pacientes } = usePacientes();
   const { doctores } = useDoctores();
   const { services } = useServices();
-  const { citas } = useCitas(e);
   //cargar el autocomplete pacientes
   let pacientesData = [];
   const Data1 = pacientes.map((paciente) => {
@@ -94,12 +91,19 @@ function atencion_caja(props) {
       data: service,
     });
   });
+  
   //Media Query
   const matches = useMediaQuery("(min-width:960px)");
   useEffect(() => {
     setSource(matches);
   }, [matches]);
   //State
+  const [citas, guardarCitas] = useState([{
+      patient: "",
+      service: "",
+      date: "",
+      imageUrl:"",
+    }]);
   const [source, setSource] = useState(false);
   const [error, guardarError] = useState(false);
   const [date, changeDate] = useState(new Date());
@@ -122,13 +126,13 @@ function atencion_caja(props) {
             style={{ width: 40, height: 40, borderRadius: "50%" }}
           />
           <b style={{ verticalAlign: "top", paddingLeft: "20px" }}>
-            {rowData.name}
+            {rowData.patient}
           </b>
         </div>
       ),
     },
-    { title: "Hora", field: "time", type: "time" },
-    { title: "Servicio", field: "servicio" },
+    { title: "Hora", field: "date", type: "time" },
+    { title: "Servicio", field: "service" },
   ];
   const { usuario, firebase } = useContext(FirebaseContext);
   //function guardar
@@ -173,39 +177,38 @@ function atencion_caja(props) {
     crearFicha();
   };
   //fichas en tiempo real 
-  useEffect(() => {
-      
+  useEffect(() => { 
+    actualizarCitas(date);
+    console.log(citas);
   }, [date]);
-
-  const data = [
-    {
-      name: "Ximena Jordan",
-      servicio: "Consulta",
-      time: "20:20",
-      imageUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTQ60ufmFsPeBQCj-o_t3GDfRDQSGEkc_0o_kXoXo-Qb_pnxSgX",
-    },
-    {
-      name: "Natalia Ayala",
-      servicio: "Consulta",
-      time: "20:50",
-      imageUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTQ60ufmFsPeBQCj-o_t3GDfRDQSGEkc_0o_kXoXo-Qb_pnxSgX",
-    },
-    {
-      name: "Andrea Angulo",
-      servicio: "Re Consulta",
-      time: "21:20",
-      imageUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTQ60ufmFsPeBQCj-o_t3GDfRDQSGEkc_0o_kXoXo-Qb_pnxSgX",
-    },
-  ];
+  let citasData=[];
+  function actualizarCitas(fecha){
+    const fechaInicio=new Date(fecha.getFullYear()+ '-'+(fecha.getMonth()+1)+'-'+fecha.getDate());
+    const fechaFin=new Date(fecha.getFullYear()+ '-'+(fecha.getMonth()+1)+'-'+(fecha.getDate()+1));
+    firebase.db.collection('appointment_management') .where("date", ">=",fechaInicio).where("date", "<=",fechaFin).get()
+    .then((querySnapshot)=> {      
+        querySnapshot.forEach((doc)=> {
+            const tiempo =doc.data().date
+            citasData.push({
+                id:doc.id,
+                patient:doc.data().patient,
+                doctor:doc.data().doctor,
+                imageUrl:doc.data().imageUrl,
+                date:new Date(tiempo * 1000),
+                service:doc.data().service,
+                create:doc.data().create,
+            })
+            guardarCitas(citasData);
+        })
+    })
+    .catch(function(error) {
+        console.log("Error getting documents: ", error);
+    });
+  }
   return (
     <>
       <CssBaseline />
-      {
-        //<Layout>
-      }
+      <Layout>
       <Container fixed>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <Grid
@@ -371,7 +374,7 @@ function atencion_caja(props) {
                     <MaterialTable
                       title="Fichas del dia"
                       columns={title}
-                      data={data}
+                      data={citas}
                     />
                   </Grid>
                 </Grid>
@@ -380,7 +383,7 @@ function atencion_caja(props) {
           </Grid>
         </form>
       </Container>
-      {/*</Layout>*/}
+      </Layout>
     </>
   );
 }

@@ -2,14 +2,15 @@ import React, { useState, useEffect, useContext } from 'react';
 import { FirebaseContext } from '../firebase';
 
 const useCitas = date => {
-    console.log(date)
+  
     const [citas, guardarCitas] = useState(null);
-
+    
     const { firebase } = useContext(FirebaseContext);
-
+    
     useEffect(() => {
+        const datefin=new Date(date.getFullYear()+ '-'+(date.getMonth()+1)+'-'+(date.getDate()+1));
         const obtenerCitas = () => {
-            firebase.db.collection('appointment_management') .where("date", ">=",date).onSnapshot(manejarSnapshot)
+            firebase.db.collection('appointment_management') .where("date", ">=",date).where("date", "<=",datefin).onSnapshot(manejarSnapshot)
         }
         obtenerCitas();
     }, []);
