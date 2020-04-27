@@ -1,5 +1,5 @@
 import React from 'react';
-import Prueba from './busqueda_doctor';
+import Prueba from './busquedaPaciente';
 
 function prueba(props) {
     return (

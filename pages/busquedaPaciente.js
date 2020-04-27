@@ -85,7 +85,14 @@ const busqueda_paciente = props => {
                       options={salida}
                       getOptionLabel={option => option.title}
                       style={{ width: "auto" }}
-                      onChange={(event, value) =>guardarSeleccion(value.data) } 
+                       onChange={(event, value) =>{
+                       if (value != null) {
+                      guardarSeleccion(value.data)
+                      }
+                      else{
+                        guardarSeleccion(null)
+                      }
+                      } } 
                       renderInput={params => (
                         <TextField
                           {...params}
@@ -127,11 +134,11 @@ const busqueda_paciente = props => {
                   <Grid item xs={6} sm={6}>
                     <p>
                       <b>Nombre:</b>
-                      Ximena
+                      {seleccion.first_name}
                     </p>
                     <p>
                       <b>Apellidos:</b>
-                      Jordan Meza
+                      {seleccion.last_name}
                     </p>
                     <p>
                       <b>Fecha de Nacimiento:</b>
@@ -139,23 +146,23 @@ const busqueda_paciente = props => {
                     </p>
                     <p>
                       <b>Ci:</b>
-                      9494774
+                      {seleccion.ci}
                     </p>
                     <p>
                       <b>Genero:</b>
-                      Femenino
+                      {seleccion.gender}
                     </p>
                     <p>
                       <b>Estatura:</b>
-                      1,72 metros
+                      {seleccion.patient.height}
                     </p>
                     <p>
                       <b>Peso:</b>
-                      50 Kg
+                      {seleccion.patient.weight}
                     </p>
                     <p>
                       <b>Tipo de sangre:</b>
-                      Rho +
+                      {seleccion.patient.blood}
                     </p>
                   </Grid>
                 </Grid>
@@ -182,16 +189,16 @@ const busqueda_paciente = props => {
                       <Grid item xs={12} sm={8}>
                         <h2 className={classes.titulos}>Signos Vitales</h2>
                         <p>
-                          <b>Presion Arterial:</b>2311
+                          <b>Presion Arterial:</b>{seleccion.patient.blood_pressure}
                         </p>
                         <p>
-                          <b>Frecuencia Cardiaca:</b>16 - 20
+                          <b>Frecuencia Cardiaca:</b> {seleccion.patient.breathing_frequency.inicio} - {seleccion.patient.breathing_frequency.fin}
                         </p>
                         <p>
-                          <b>Ritmo Caridaco:</b> 60 - 80
+                          <b>Ritmo Caridaco:</b> {seleccion.patient.heart_rate.inicio} - {seleccion.patient.heart_rate.fin}
                         </p>
                         <p>
-                          <b>Temperatura:</b>37 C{" "}
+                          <b>Temperatura:</b>{seleccion.patient.temperature} C
                         </p>
                       </Grid>
                       {/*Aqui van los chips de recomendacion*/}
