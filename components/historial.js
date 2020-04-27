@@ -7,6 +7,7 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 
 function historial({historial}) {
+  console.log(historial)
     return (
         <>
             <CssBaseline />
@@ -39,7 +40,7 @@ function historial({historial}) {
                  <Grid item xs={12} sm={12}>
                     <p>
                     <b>Diagnostico Presuntivo:</b>
-                    {historial.presumtive_diagnosis}
+                    {historial.presumptive_diagnosis}
                   </p>
                  </Grid>
                  <Grid item xs={12} sm={12}>
