@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
@@ -18,6 +18,10 @@ import PropTypes from "prop-types";
 import SearchIcon from "@material-ui/icons/Search";
 //layout
 import Layout from "../components/layout/layout"
+//hooks
+import useDoctores from "../hooks/useDoctores";
+//context
+import { FirebaseContext } from "../firebase";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -40,6 +44,17 @@ const useStyles = makeStyles(theme => ({
 
 const busqueda_doctor = props => {
   const classes = useStyles();
+  const { doctores } = useDoctores();
+  const [seleccion,guardarSeleccion]=useState(null);
+   //cargar el autocomplete pacientes
+  let doctoresData = [];
+  const Data2 = doctores.map((doctor) => {
+    doctoresData.push({
+      title: doctor.ci + "  " + doctor.first_name + "  " + doctor.last_name,
+      id: doctor.id,
+      data: doctor,
+    });
+  });
   const pacientes = [
     { title: "The Shawshank Redemption", year: 1994 },
     { title: "The Godfather", year: 1972 }
@@ -47,7 +62,7 @@ const busqueda_doctor = props => {
   return (
     <>
       <CssBaseline />
-      <Layout>
+      {/*<Layout>*/}
       <Container fixed>
         <Grid
           container
@@ -72,13 +87,21 @@ const busqueda_doctor = props => {
                 <Grid item xs={10} sm={10}>
                   <Autocomplete
                     id="combo-box-demo"
-                    options={pacientes}
+                    options={doctoresData}
                     getOptionLabel={option => option.title}
                     style={{ width: "auto" }}
+                    onChange={(event, value) =>{
+                       if (value != null) {
+                      guardarSeleccion(value.data)
+                      }
+                      else{
+                        guardarSeleccion(null)
+                      }
+                      } } 
                     renderInput={params => (
                       <TextField
                         {...params}
-                        label="Busqueda de Pacientes"
+                        label="Buscar Doctor"
                         variant="outlined"
                       />
                     )}
@@ -93,6 +116,7 @@ const busqueda_doctor = props => {
             </Paper>
           </Grid>
           {/*parte de datos personales*/}
+           {seleccion !=null?(<>
           <Grid item xs={12} sm={6}>
             <Paper className={classes.paper} elevation={3}>
               <Grid
@@ -108,37 +132,33 @@ const busqueda_doctor = props => {
                 <Grid item xs={6} sm={6}>
                   <Avatar
                     alt="Remy Sharp"
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTQ60ufmFsPeBQCj-o_t3GDfRDQSGEkc_0o_kXoXo-Qb_pnxSgX"
+                    src={seleccion.photo}
                     className={classes.imagen}
                   />
                 </Grid>
                 <Grid item xs={6} sm={6}>
                   <p>
                     <b>Nombre:</b>
-                    Ximena
+                    {seleccion.first_name}
                   </p>
                   <p>
                     <b>Apellidos:</b>
-                    Jordan Meza
-                  </p>
-                  <p>
-                    <b>Fecha de Nacimiento:</b>
-                    27 de noviembre de 2001
+                    {seleccion.last_name}
                   </p>
                   <p>
                     <b>Ci:</b>
-                    9494774
+                    {seleccion.ci}
                   </p>
                   <p>
                     <b>Genero:</b>
-                    Femenino
+                    {seleccion.gender}
                   </p>
                  
                   <p>
                     <b>Tipo de sangre:</b>
                     Rho +
                   </p>
-                  <h1>Medico Cirujano</h1>
+                  <h1>{seleccion.doctor.doctor_type.name}</h1>
                 </Grid>
               </Grid>
             </Paper>
@@ -184,12 +204,12 @@ const busqueda_doctor = props => {
                     Notificar Emergencia
                 </Button>
                
-          </Grid>
+          </Grid>></>):null}
          
          
         </Grid>
       </Container>
-      </Layout>
+      {/*</Layout>*/}
     </>
   );
 };
