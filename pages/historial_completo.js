@@ -82,7 +82,7 @@ const historial_completo = ({pacienteId}) => {
   return (
     <>
       <CssBaseline />
-      {/*<Layout>*/}
+      <Layout>
       <Container fixed>
         <Grid
           container
@@ -143,7 +143,7 @@ const historial_completo = ({pacienteId}) => {
           </Grid>
         </Grid>
       </Container>
-      {/*</Layout>*/}
+      </Layout>
     </>
   );
 };
