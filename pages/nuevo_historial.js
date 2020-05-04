@@ -94,7 +94,7 @@ function nuevo_historial(props) {
   return (
     <>
       <CssBaseline />
-      {/*<Layout>*/}
+      <Layout>
       <Container fixed>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <Grid
@@ -286,7 +286,7 @@ function nuevo_historial(props) {
           </Grid>
         </form>
       </Container>
-      {/*</Layout>*/}
+      </Layout>
     </>
   );
 }

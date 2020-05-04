@@ -138,7 +138,7 @@ function atencion_caja(props) {
     async function crearFicha() {
       // si el usuario no esta autenticado llevar al login
       if (!usuario) {
-        return router.push("/");
+        return Router.push("/");
       }
       // crear el objeto de nuevo producto
       const fichaData = {
