@@ -16,12 +16,11 @@ function producto_farmacia(props) {
   const columns = ["Id", "Nombre", "Laboratorio", "Fecha de vencimiento", "Costo Unitario"];
 
     const data = [
-      [1, "Ibuprofeno", "Inti", '25/11/2021', "$100,000"],
-      [2, "Paracetamol", "Inti", '19/01/2021', "$200,000"],
-      [3, "Ibuprofeno", "MultiLab", '11/05/2021', "$500,000"],
+      [1, "Ibuprofeno", "Inti", '25/11/2021', "$10,00"],
+      [2, "Paracetamol", "Inti", '19/01/2021', "$20,000"],
+      [3, "Ibuprofeno", "MultiLab", '11/05/2021', "$50,000"],
       [4, "Acitromicina", "Bago", '20/04/2023', "$50,000"],
       [5, "Diacepan", "CodeInc", '11/09/2020', "$75,000"],
-      
     ];
 
     const options = {
@@ -32,7 +31,7 @@ function producto_farmacia(props) {
   return (
     <>
       <CssBaseline />
-      <Layout>
+      {/*<Layout>*/}
       <Container fixed>
         <Grid
           container
@@ -51,7 +50,7 @@ function producto_farmacia(props) {
           </Grid>
         </Grid>
       </Container>
-      </Layout>
+      {/*</Layout>*/}
     </>
   );
 }

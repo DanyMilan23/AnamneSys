@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import Router from 'next/router';
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
@@ -178,7 +179,7 @@ function transaccion_caja(props) {
   return (
     <>
       <CssBaseline />
-      {/*<Layout>*/}
+      <Layout>
       <Container fixed>
         <Grid
           container
@@ -338,7 +339,7 @@ function transaccion_caja(props) {
           </Grid>
         </Grid>
       </Container>
-      {/*</Layout>*/}
+      </Layout>
     </>
   );
 }
