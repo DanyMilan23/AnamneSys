@@ -138,7 +138,7 @@ function venta_farmacia(props) {
   return (
     <>
       <CssBaseline />
-      {/*<Layout>*/}
+      <Layout>
       <Container fixed>
         <Grid
           container
@@ -304,7 +304,7 @@ function venta_farmacia(props) {
           </Grid>
         </Grid>
       </Container>
-      {/*</Layout>*/}
+      </Layout>
     </>
   );
 }

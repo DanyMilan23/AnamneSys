@@ -19,7 +19,10 @@ import Router from 'next/router';
 import firebase from '../firebase';
 // validaciones
 import useValidacion from '../hooks/useValidacion';
+//import useSintomas from '../hooks/useSintomas';
+//import useSintomas from '../hooks/useSintomas'
 import validarIniciarSesion from '../validacion/validarIniciarSesion';
+
 
 function Copyright() {
   return (
@@ -74,6 +77,7 @@ const STATE_INICIAL = {
 
 export default function SignInSide() {
   const classes = useStyles();
+  //const {sintomas}=useSintomas();
   const [ error, guardarError] = useState(false);
   
   const { valores, errores, handleSubmit, handleChange, handleBlur } = useValidacion(STATE_INICIAL, validarIniciarSesion, iniciarSesion);

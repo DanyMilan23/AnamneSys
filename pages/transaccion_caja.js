@@ -179,7 +179,7 @@ function transaccion_caja(props) {
   return (
     <>
       <CssBaseline />
-      <Layout>
+      {/*<Layout>*/}
       <Container fixed>
         <Grid
           container
@@ -339,7 +339,7 @@ function transaccion_caja(props) {
           </Grid>
         </Grid>
       </Container>
-      </Layout>
+      {/*</Layout>*/}
     </>
   );
 }

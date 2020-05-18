@@ -103,7 +103,48 @@ export default function MenuAppBar({ datos }) {
             <ListItemText primary="Atencion Paciente" />
           </ListItem>
         </Link>
+        {/*Pruebas */}
+        <Link href="/atencion_caja">
+          <ListItem button key="Test">
+            <ListItemIcon>
+              <PlaylistAddCheckOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Atencion Caja" />
+          </ListItem>
+        </Link>
       </List>
+      <Link href="/busqueda_doctor">
+          <ListItem button key="Test">
+            <ListItemIcon>
+              <PlaylistAddCheckOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Busqueda Doctor" />
+          </ListItem>
+        </Link>
+        <Link href="/producto_farmacia">
+          <ListItem button key="Test">
+            <ListItemIcon>
+              <PlaylistAddCheckOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Producto Farmacia" />
+          </ListItem>
+        </Link>
+        <Link href="/transaccion_caja">
+          <ListItem button key="Test">
+            <ListItemIcon>
+              <PlaylistAddCheckOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Transaccion Caja" />
+          </ListItem>
+        </Link>
+        <Link href="/venta_farmacia">
+          <ListItem button key="Test">
+            <ListItemIcon>
+              <PlaylistAddCheckOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Venta Farmacia" />
+          </ListItem>
+        </Link>
     </div>
   );
   //La lista de apartados del menu

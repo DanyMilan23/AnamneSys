@@ -7,7 +7,8 @@ import { FirebaseContext } from '../../firebase';
 
 const Layout = props => {
     const { usuario, firebase } = useContext(FirebaseContext);
-    const {user} = useUsuario(usuario.email);
+    const correo=usuario.email
+    const {user} = useUsuario(correo);
 
     return ( 
         <>

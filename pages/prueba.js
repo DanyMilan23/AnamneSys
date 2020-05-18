@@ -1,5 +1,5 @@
 import React from 'react';
-import Prueba from './venta_farmacia';
+import Prueba from './transaccion_caja';
 //import useSintomas from '../hooks/useSintomas'
 
 function prueba(props) {

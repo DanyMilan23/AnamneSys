@@ -6,13 +6,13 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../components/theme";
 import firebase, { FirebaseContext } from '../firebase';
 import useAutenticacion from '../hooks/useAutenticacion';
-
+import useUsuario from '../hooks/useUsuario';
 
 
 const MyApp = props => {
-   const usuario = useAutenticacion();
-   console.log(usuario);
-   const { Component, pageProps } = props;
+  const usuario = useAutenticacion();
+  console.log(usuario);
+  const { Component, pageProps } = props;
   useEffect(() => { 
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector("#jss-server-side");
