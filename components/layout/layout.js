@@ -7,8 +7,8 @@ import { FirebaseContext } from '../../firebase';
 
 const Layout = props => {
     const { usuario, firebase } = useContext(FirebaseContext);
-    const correo=usuario.email
-    const {user} = useUsuario(correo);
+    //const correo=usuario.email
+    //const {user} = useUsuario(correo);
 
     return ( 
         <>
@@ -20,7 +20,7 @@ const Layout = props => {
                 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
             </Head>
 
-            <HeaderPrincipal datos={user}/>
+            <HeaderPrincipal tipo={props.tipo}/>
             <main>
                 {props.children}
             </main>

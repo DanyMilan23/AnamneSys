@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function MenuAppBar({ datos }) {
+export default function MenuAppBar({ tipo }) {
   const classes = useStyles();
   const { usuario, firebase } = useContext(FirebaseContext);
   //states
@@ -55,7 +55,7 @@ export default function MenuAppBar({ datos }) {
     setmenu({ ...menu, [side]: open });
   };
   //menu Doctor
-  const MenuDoctor = tipo => (
+  const MenuDoctor = () => (
     <div
       className={classes.list}
       role="presentation"
@@ -103,78 +103,138 @@ export default function MenuAppBar({ datos }) {
             <ListItemText primary="Atencion Paciente" />
           </ListItem>
         </Link>
-        {/*Pruebas */}
-        <Link href="/atencion_caja">
-          <ListItem button key="Test">
-            <ListItemIcon>
-              <PlaylistAddCheckOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Atencion Caja" />
-          </ListItem>
-        </Link>
       </List>
-      <Link href="/busqueda_doctor">
-          <ListItem button key="Test">
-            <ListItemIcon>
-              <PlaylistAddCheckOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Busqueda Doctor" />
-          </ListItem>
-        </Link>
-        <Link href="/producto_farmacia">
-          <ListItem button key="Test">
-            <ListItemIcon>
-              <PlaylistAddCheckOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Producto Farmacia" />
-          </ListItem>
-        </Link>
-        <Link href="/transaccion_caja">
-          <ListItem button key="Test">
-            <ListItemIcon>
-              <PlaylistAddCheckOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Transaccion Caja" />
-          </ListItem>
-        </Link>
-        <Link href="/venta_farmacia">
-          <ListItem button key="Test">
-            <ListItemIcon>
-              <PlaylistAddCheckOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Venta Farmacia" />
-          </ListItem>
-        </Link>
     </div>
   );
-  //La lista de apartados del menu
-  const menu_2 = side => (
+  //Menu enfermero
+  const MenuEnfermero = () => (
     <div
       className={classes.list}
       role="presentation"
-      onClick={toggleDrawer(side, false)}
-      onKeyDown={toggleDrawer(side, false)}
+      onClick={toggleDrawer("left", false)}
+      onKeyDown={toggleDrawer("left", false)}
     >
       <List>
-        <ListItem button key="Prueba">
-          <ListItemIcon>
-            <InboxIcon />
-          </ListItemIcon>
-          <ListItemText primary="Prueba" />
-        </ListItem>
+        <Link href="/busquedaPaciente">
+          <ListItem button key="Test">
+            <ListItemIcon>
+              <FindInPageOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Busqueda Paciente" />
+          </ListItem>
+        </Link>
+        <Link href="/main">
+          <ListItem button key="Test">
+            <ListItemIcon>
+              <AccountTreeOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Antecedentes" />
+          </ListItem>
+        </Link>
+        <Link href="/nuevo_historial">
+          <ListItem button key="Test">
+            <ListItemIcon>
+              <CreateNewFolderOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Nuevo Historial" />
+          </ListItem>
+        </Link>
       </List>
     </div>
   );
-  let lista;
-  const elegirMenu = tipo => {
-    if (tipo === "doctor") {
-      console.log("entro en doctor");
-      lista = MenuDoctor();
-    } else {
-      console.log("no entro en doctor");
-      lista = menu_2();
-    }
-  };
+  //MENU FARMACIA
+  const MenuFarmacia = () => (
+    <div
+      className={classes.list}
+      role="presentation"
+      onClick={toggleDrawer("left", false)}
+      onKeyDown={toggleDrawer("left", false)}
+    >
+      <List>
+        <Link href="/busquedaPaciente">
+          <ListItem button key="Test">
+            <ListItemIcon>
+              <FindInPageOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Busqueda Paciente" />
+          </ListItem>
+        </Link>
+        <Link href="/main">
+          <ListItem button key="Test">
+            <ListItemIcon>
+              <AccountTreeOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Antecedentes" />
+          </ListItem>
+        </Link>
+      </List>
+    </div>
+  );
+  //Menu Cajero
+  const MenuCajero = () => (
+    <div
+      className={classes.list}
+      role="presentation"
+      onClick={toggleDrawer("left", false)}
+      onKeyDown={toggleDrawer("left", false)}
+    >
+      <List>
+        <Link href="/busquedaPaciente">
+          <ListItem button key="Test">
+            <ListItemIcon>
+              <FindInPageOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Busqueda Paciente" />
+          </ListItem>
+        </Link>
+        <Link href="/main">
+          <ListItem button key="Test">
+            <ListItemIcon>
+              <AccountTreeOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Antecedentes" />
+          </ListItem>
+        </Link>
+      </List>
+    </div>
+  );
+  //Menu Administrador
+  const MenuAdmin = () => (
+    <div
+      className={classes.list}
+      role="presentation"
+      onClick={toggleDrawer("left", false)}
+      onKeyDown={toggleDrawer("left", false)}
+    >
+      <List>
+        <Link href="/busquedaPaciente">
+          <ListItem button key="Test">
+            <ListItemIcon>
+              <FindInPageOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Busqueda Paciente" />
+          </ListItem>
+        </Link>
+        <Link href="/main">
+          <ListItem button key="Test">
+            <ListItemIcon>
+              <AccountTreeOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Antecedentes" />
+          </ListItem>
+        </Link>
+        <Link href="/nuevo_historial">
+          <ListItem button key="Test">
+            <ListItemIcon>
+              <CreateNewFolderOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Nuevo Historial" />
+          </ListItem>
+        </Link>
+      </List>
+    </div>
+  );
+
 
   return (
     <div className={classes.root}>
@@ -214,9 +274,11 @@ export default function MenuAppBar({ datos }) {
         </Toolbar>
       </AppBar>
       <Drawer open={menu.left} onClose={toggleDrawer("left", false)}>
-        {datos != null ? elegirMenu(datos[0].type) : null}
-        {lista}
-        {/*MenuDoctor("left") */}
+        {tipo == 'doc' ? (<MenuDoctor/>):null}
+        {tipo == 'adm' ? (<MenuAdmin/>):null}
+        {tipo == 'enf' ? (<MenuEnfermero/>):null}
+        {tipo == 'far' ? (<MenuFarmacia/>):null}
+        {tipo == 'caj' ? (<MenuCajero/>):null}
       </Drawer>
     </div>
   );

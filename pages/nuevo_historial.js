@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Router from 'next/router';
+import Router from "next/router";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
@@ -16,8 +16,8 @@ import Layout from "../components/layout/layout";
 import useSintomas from "../hooks/useSintomas";
 import usePacientes from "../hooks/usePacientes";
 import { FirebaseContext } from "../firebase";
-import Token from '../api/api'
-import axios from 'axios'
+import Token from "../api/api";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -36,10 +36,10 @@ const useStyles = makeStyles((theme) => ({
 
 function nuevo_historial(props) {
   const classes = useStyles();
-  const [sin, setSin]=useState([])
-  const [diagnosis, setDiagnosis] = useState(null)
+  const [sin, setSin] = useState([]);
+  const [diagnosis, setDiagnosis] = useState(null);
   const { usuario, firebase } = useContext(FirebaseContext);
-  const [seleccion,guardarSeleccion]=useState(null);
+  const [seleccion, guardarSeleccion] = useState(null);
   const [sintoma, guardarSintoma] = useState([]);
   const [historial, guardarHistorial] = useState({
     current_illness: "",
@@ -49,45 +49,45 @@ function nuevo_historial(props) {
     reason_consultation: "",
     final_diagnosis: "",
   });
-   const { pacientes } = usePacientes();
+  const { pacientes } = usePacientes();
   let pacientesData = [];
-  const data1 = pacientes.map(paciente => {
+  const data1 = pacientes.map((paciente) => {
     pacientesData.push({
-      title:paciente.ci +"  " +paciente.first_name +"  " +paciente.last_name,
+      title:
+        paciente.ci + "  " + paciente.first_name + "  " + paciente.last_name,
       id: paciente.id,
-      data:paciente
+      data: paciente,
     });
   });
   //solo ids
-  
-  useEffect(() => { 
-    let soloids=[]
+
+  useEffect(() => {
+    let soloids = [];
     for (const prop in sintoma) {
-     // console.log(sintoma[prop])
-      soloids.push(sintoma[prop].ID)
+      // console.log(sintoma[prop])
+      soloids.push(sintoma[prop].ID);
     }
-    setSin(soloids)
-  },[sintoma])
+    setSin(soloids);
+  }, [sintoma]);
   //fin
-  const diagnostico = async() =>{
-    console.log('entro')
-    /*const consulta= Token.then(data => {
+  const diagnostico = async () => {
+    console.log("entro");
+    const consulta = Token.then((data) => {
       const obtenerSintomas = async () => {
-      //const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImNvZGVncm91cDIzQGdtYWlsLmNvbSIsInJvbGUiOiJVc2VyIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc2lkIjoiNjc5NiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvdmVyc2lvbiI6IjIwMCIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbGltaXQiOiI5OTk5OTk5OTkiLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL21lbWJlcnNoaXAiOiJQcmVtaXVtIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9sYW5ndWFnZSI6ImVuLWdiIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9leHBpcmF0aW9uIjoiMjA5OS0xMi0zMSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcHN0YXJ0IjoiMjAyMC0wNC0xMSIsImlzcyI6Imh0dHBzOi8vc2FuZGJveC1hdXRoc2VydmljZS5wcmlhaWQuY2giLCJhdWQiOiJodHRwczovL2hlYWx0aHNlcnZpY2UucHJpYWlkLmNoIiwiZXhwIjoxNTg2OTg0MjQ3LCJuYmYiOjE1ODY5NzcwNDd9.OJ_EIicMNvpnOR39lBZBCrRn8qJ4UqcT23dYvvqXZi0';
-      //const token ='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImNvZGVncm91cDIzQGdtYWlsLmNvbSIsInJvbGUiOiJVc2VyIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc2lkIjoiNDEzNCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvdmVyc2lvbiI6IjEwOSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbGltaXQiOiIxMDAiLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL21lbWJlcnNoaXAiOiJCYXNpYyIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbGFuZ3VhZ2UiOiJlbi1nYiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJhdGlvbiI6IjIwOTktMTItMzEiLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL21lbWJlcnNoaXBzdGFydCI6IjIwMjAtMDQtMTEiLCJpc3MiOiJodHRwczovL2F1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE1ODcyNzc0NjEsIm5iZiI6MTU4NzI3MDI2MX0.76dqUykG4_bpPL7KroMwGOTwSt6N0Rvu2mPxXdEbtFc'
-      const password =data.Token
-      console.log(password)
-      const url = `https://healthservice.priaid.ch/diagnosis?token=${password}&format=json&language=en-gb&symptoms=[${sin}]&gender=male&year_of_birth=1999`;
-      const resultado = await axios.get(url);
-      console.log(resultado)
-      setDiagnosis(resultado);
-      }
+        //const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImNvZGVncm91cDIzQGdtYWlsLmNvbSIsInJvbGUiOiJVc2VyIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc2lkIjoiNjc5NiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvdmVyc2lvbiI6IjIwMCIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbGltaXQiOiI5OTk5OTk5OTkiLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL21lbWJlcnNoaXAiOiJQcmVtaXVtIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9sYW5ndWFnZSI6ImVuLWdiIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9leHBpcmF0aW9uIjoiMjA5OS0xMi0zMSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcHN0YXJ0IjoiMjAyMC0wNC0xMSIsImlzcyI6Imh0dHBzOi8vc2FuZGJveC1hdXRoc2VydmljZS5wcmlhaWQuY2giLCJhdWQiOiJodHRwczovL2hlYWx0aHNlcnZpY2UucHJpYWlkLmNoIiwiZXhwIjoxNTg2OTg0MjQ3LCJuYmYiOjE1ODY5NzcwNDd9.OJ_EIicMNvpnOR39lBZBCrRn8qJ4UqcT23dYvvqXZi0';
+        //const token ='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImNvZGVncm91cDIzQGdtYWlsLmNvbSIsInJvbGUiOiJVc2VyIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc2lkIjoiNDEzNCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvdmVyc2lvbiI6IjEwOSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbGltaXQiOiIxMDAiLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL21lbWJlcnNoaXAiOiJCYXNpYyIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbGFuZ3VhZ2UiOiJlbi1nYiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJhdGlvbiI6IjIwOTktMTItMzEiLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL21lbWJlcnNoaXBzdGFydCI6IjIwMjAtMDQtMTEiLCJpc3MiOiJodHRwczovL2F1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE1ODcyNzc0NjEsIm5iZiI6MTU4NzI3MDI2MX0.76dqUykG4_bpPL7KroMwGOTwSt6N0Rvu2mPxXdEbtFc'
+        const password = data.Token;
+        console.log(password);
+        const url = `https://healthservice.priaid.ch/diagnosis?token=${password}&format=json&language=en-gb&symptoms=[${sin}]&gender=male&year_of_birth=1999`;
+        const resultado = await axios.get(url);
+        console.log(resultado);
+        setDiagnosis(resultado);
+      };
       obtenerSintomas();
-    })*/
-    
-  }
+    });
+  };
   const handleSubmit = (e) => {
-    console.log("entro submit")
+    console.log("entro submit");
     e.preventDefault();
     async function nuevoHistorial() {
       // si el usuario no esta autenticado llevar al login
@@ -127,202 +127,230 @@ function nuevo_historial(props) {
     <>
       <CssBaseline />
       <Layout>
-      <Container fixed>
-        <form className={classes.form} noValidate onSubmit={handleSubmit}>
-          <Grid
-            container
-            spacing={1}
-            direction="row"
-            justify="flex-start"
-            alignItems="flex-start"
-          >
-            <Grid item xs={12} sm={12}>
-              <h1>Nuevo Historial</h1>
-            </Grid>
-            <Grid item xs={12} sm={12}>
-              <Paper className={classes.paper} elevation={3}>
-                <Grid
-                  container
-                  spacing={2}
-                  direction="row"
-                  justify="flex-start"
-                  alignItems="flex-start"
-                >
-                  <Grid item xs={12} sm={12}>
-                    <Autocomplete
-                      id="combo-box-demo"
-                      options={pacientesData}
-                      getOptionLabel={(option) => option.title}
-                      style={{ width: "auto" }}
-                      onChange={(event, value) => {
-                        if (value != null) {
-                          guardarSeleccion(value.id);
-                        } else {
-                          guardarSeleccion(null);
-                        }
-                      }}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label="Busqueda de Pacientes"
-                          variant="outlined"
-                        />
+        <Container fixed>
+          <form className={classes.form} noValidate onSubmit={handleSubmit}>
+            <Grid
+              container
+              spacing={1}
+              direction="row"
+              justify="flex-start"
+              alignItems="flex-start"
+            >
+              <Grid item xs={12} sm={12}>
+                <h1>Nuevo Historial</h1>
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <Paper className={classes.paper} elevation={3}>
+                  <Grid
+                    container
+                    spacing={2}
+                    direction="row"
+                    justify="flex-start"
+                    alignItems="flex-start"
+                  >
+                    <Grid item xs={12} sm={12}>
+                      <Autocomplete
+                        id="combo-box-demo"
+                        options={pacientesData}
+                        getOptionLabel={(option) => option.title}
+                        style={{ width: "auto" }}
+                        onChange={(event, value) => {
+                          if (value != null) {
+                            guardarSeleccion(value.id);
+                          } else {
+                            guardarSeleccion(null);
+                          }
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Busqueda de Pacientes"
+                            variant="outlined"
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={12}>
+                      <TextField
+                        id="enfermedad_actual"
+                        label="Enfermedad Actual"
+                        multiline
+                        rows="1"
+                        variant="outlined"
+                        margin="dense"
+                        onChange={(e) => {
+                          guardarHistorial({
+                            ...historial,
+                            current_illness: e.target.value,
+                          });
+                        }}
+                        value={historial.current_illness}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6} sm={6}>
+                      <TextField
+                        id="resultado_laboratorio"
+                        label="Resultado de laboratorio"
+                        multiline
+                        rows="5"
+                        variant="outlined"
+                        margin="dense"
+                        onChange={(e) => {
+                          guardarHistorial({
+                            ...historial,
+                            laboratory_result: e.target.value,
+                          });
+                        }}
+                        value={historial.laboratory_result}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6} sm={6}>
+                      <TextField
+                        id="examen_fisico"
+                        label="Examen Fisico"
+                        multiline
+                        rows="5"
+                        variant="outlined"
+                        margin="dense"
+                        onChange={(e) => {
+                          guardarHistorial({
+                            ...historial,
+                            physical_exam: e.target.value,
+                          });
+                        }}
+                        value={historial.physical_exam}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={12}>
+                      <TextField
+                        id="diagnostico_presuntivo"
+                        label="Diagnostico Presuntivo"
+                        multiline
+                        rows="3"
+                        variant="outlined"
+                        margin="dense"
+                        onChange={(e) => {
+                          guardarHistorial({
+                            ...historial,
+                            presumptive_diagnosis: e.target.value,
+                          });
+                        }}
+                        value={historial.presumptive_diagnosis}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={12}>
+                      <TextField
+                        id="razon_consulta"
+                        label="Razon de la consulta"
+                        multiline
+                        rows="1"
+                        variant="outlined"
+                        margin="dense"
+                        onChange={(e) => {
+                          guardarHistorial({
+                            ...historial,
+                            reason_consultation: e.target.value,
+                          });
+                        }}
+                        value={historial.reason_consultation}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6} sm={6}>
+                      <Autocomplete
+                        multiple
+                        id="tags-outlined"
+                        options={sintomas}
+                        getOptionLabel={(option) => option.Nombre}
+                        filterSelectedOptions
+                        onChange={(event, value) => {
+                          guardarSintoma(value);
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            label="filterSelectedOptions"
+                            placeholder="Favorites"
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item xs={6} sm={6}>
+                      <h2 className={classes.titulos}>Diagnostico</h2>
+                      {diagnosis ? (
+                        <div>
+                          <p>Issues</p>
+                          <p>
+                            {diagnosis.data.map((sub) => (
+                              <div>
+                                {console.log(sub)}
+                                <Chip    
+                                  label={sub.Issue.Name}
+                                  clickable
+                                  color="primary"
+                                />
+                                <p>Especialisacion</p>
+                                {sub.Specialisation.map((esp)=>(
+                                  <div>
+                                  {console.log(esp)}
+                                  <Chip    
+                                    label={esp.Name}
+                                    clickable
+                                    color="secondary"
+                                  />
+
+                                  </div>
+                                ))}
+                                
+                              </div>
+                            ))}
+                          </p>
+                        </div>
+                      ) : (
+                        <h1>No hay observaciones</h1>
                       )}
-                    />
+                    </Grid>
+                    <Grid item xs={6} sm={6}>
+                      <TextField
+                        id="diagnostico_final"
+                        label="Diagnostico final"
+                        multiline
+                        rows="3"
+                        variant="outlined"
+                        margin="dense"
+                        onChange={(e) => {
+                          guardarHistorial({
+                            ...historial,
+                            final_diagnosis: e.target.value,
+                          });
+                        }}
+                        value={historial.final_diagnosis}
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={6} sm={6}>
+                      <Button variant="contained" color="primary" type="submit">
+                        Guardar Historial
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={diagnostico}
+                      >
+                        Diagnosticar
+                      </Button>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12} sm={12}>
-                    <TextField
-                      id="enfermedad_actual"
-                      label="Enfermedad Actual"
-                      multiline
-                      rows="1"
-                      variant="outlined"
-                      margin="dense"
-                      onChange={(e) => {
-                        guardarHistorial({
-                          ...historial,
-                          current_illness: e.target.value,
-                        });
-                      }}
-                      value={historial.current_illness}
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid item xs={6} sm={6}>
-                    <TextField
-                      id="resultado_laboratorio"
-                      label="Resultado de laboratorio"
-                      multiline
-                      rows="5"
-                      variant="outlined"
-                      margin="dense"
-                      onChange={(e) => {
-                        guardarHistorial({
-                          ...historial,
-                          laboratory_result: e.target.value,
-                        });
-                      }}
-                      value={historial.laboratory_result}
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid item xs={6} sm={6}>
-                    <TextField
-                      id="examen_fisico"
-                      label="Examen Fisico"
-                      multiline
-                      rows="5"
-                      variant="outlined"
-                      margin="dense"
-                      onChange={(e) => {
-                        guardarHistorial({
-                          ...historial,
-                          physical_exam: e.target.value,
-                        });
-                      }}
-                      value={historial.physical_exam}
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={12}>
-                    <TextField
-                      id="diagnostico_presuntivo"
-                      label="Diagnostico Presuntivo"
-                      multiline
-                      rows="3"
-                      variant="outlined"
-                      margin="dense"
-                      onChange={(e) => {
-                        guardarHistorial({
-                          ...historial,
-                          presumptive_diagnosis: e.target.value,
-                        });
-                      }}
-                      value={historial.presumptive_diagnosis}
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={12}>
-                    <TextField
-                      id="razon_consulta"
-                      label="Razon de la consulta"
-                      multiline
-                      rows="1"
-                      variant="outlined"
-                      margin="dense"
-                      onChange={(e) => {
-                        guardarHistorial({
-                          ...historial,
-                          reason_consultation: e.target.value,
-                        });
-                      }}
-                      value={historial.reason_consultation}
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid item xs={6} sm={6}>
-                    <Autocomplete
-                      multiple
-                      id="tags-outlined"
-                      options={sintomas}
-                      getOptionLabel={(option) => option.Nombre}
-                      filterSelectedOptions
-                      onChange={(event, value) => {
-                        guardarSintoma(value);
-                      }}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          variant="outlined"
-                          label="filterSelectedOptions"
-                          placeholder="Favorites"
-                        />
-                      )}
-                    />
-                  </Grid>
-                  <Grid item xs={6} sm={6}>
-                    <h2 className={classes.titulos}>Diagnostico</h2>
-                    {diagnosis?(<div>
-                    <p>Issues</p>
-                    <p>{diagnosis.data.map((sub)=>(<div>
-                      {console.log(sub)}
-                      
-                      <p>{sub.Issue.Name}</p>
-                    </div>))}</p>
-                    </div>):(<h1>No hay observaciones</h1>)}
-                  </Grid>
-                  <Grid item xs={6} sm={6}>
-                    <TextField
-                      id="diagnostico_final"
-                      label="Diagnostico final"
-                      multiline
-                      rows="3"
-                      variant="outlined"
-                      margin="dense"
-                      onChange={(e) => {
-                        guardarHistorial({
-                          ...historial,
-                          final_diagnosis: e.target.value,
-                        });
-                      }}
-                      value={historial.final_diagnosis}
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid item xs={6} sm={6}>
-                    <Button variant="contained" color="primary" type="submit">
-                      Guardar Historial
-                    </Button>
-                     <Button variant="contained" color="primary" onClick={diagnostico}>
-                      Diagnosticar
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Paper>
+                </Paper>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </Container>
+          </form>
+        </Container>
       </Layout>
     </>
   );
