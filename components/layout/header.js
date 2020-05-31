@@ -6,7 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Drawer from "@material-ui/core/Drawer";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import Avatar from '@material-ui/core/Avatar';
+import Avatar from "@material-ui/core/Avatar";
 //Componentes de listas
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -28,30 +28,30 @@ import PlaylistAddCheckOutlinedIcon from "@material-ui/icons/PlaylistAddCheckOut
 import useUsuario from "../../hooks/useUsuario";
 import { FirebaseContext } from "../../firebase";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   list: {
-    width: 250
+    width: 250,
   },
   fullList: {
-    width: "auto"
-  }
+    width: "auto",
+  },
 }));
 
 export default function MenuAppBar({ tipo }) {
   const classes = useStyles();
-  const { usuario, firebase } = useContext(FirebaseContext);
+  const { usuario, firebase, datosUsuario } = useContext(FirebaseContext);
   //states
   const [menu, setmenu] = React.useState({
-    left: false
+    left: false,
   });
   //funcion de activacion del slide
-  const toggleDrawer = (side, open) => event => {
+  const toggleDrawer = (side, open) => (event) => {
     setmenu({ ...menu, [side]: open });
   };
   //menu Doctor
@@ -235,7 +235,6 @@ export default function MenuAppBar({ tipo }) {
     </div>
   );
 
-
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -252,14 +251,11 @@ export default function MenuAppBar({ tipo }) {
           <Typography variant="h6" className={classes.title}>
             AnamneSys
           </Typography>
-          {/*datos != null ? (
+          {usuario ? (
             <Typography variant="h6" className={classes.title}>
-              Bienvenido Dr. {datos[0].last_name}
+              Bienvenido Dr.{datosUsuario.first_name}
             </Typography>
-          ) : null*/}
-          <Typography variant="h6" className={classes.title}>
-            Bienvenido Dr.{usuario.displayName}
-          </Typography>
+          ) : null}
           <Button
             variant="contained"
             color="secondary"
@@ -270,15 +266,15 @@ export default function MenuAppBar({ tipo }) {
           >
             Cerrar Sesion
           </Button>
-          <Avatar alt="Remy Sharp" src={usuario.photoURL} />
+          {usuario ? <Avatar alt="Remy Sharp" src={usuario.photoURL} /> : null}
         </Toolbar>
       </AppBar>
       <Drawer open={menu.left} onClose={toggleDrawer("left", false)}>
-        {tipo == 'doc' ? (<MenuDoctor/>):null}
-        {tipo == 'adm' ? (<MenuAdmin/>):null}
-        {tipo == 'enf' ? (<MenuEnfermero/>):null}
-        {tipo == 'far' ? (<MenuFarmacia/>):null}
-        {tipo == 'caj' ? (<MenuCajero/>):null}
+        {tipo == "doc" ? <MenuDoctor /> : null}
+        {tipo == "adm" ? <MenuAdmin /> : null}
+        {tipo == "enf" ? <MenuEnfermero /> : null}
+        {tipo == "far" ? <MenuFarmacia /> : null}
+        {tipo == "caj" ? <MenuCajero /> : null}
       </Drawer>
     </div>
   );
