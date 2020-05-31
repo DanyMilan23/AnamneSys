@@ -14,6 +14,7 @@ const main = () => {
     return (
         <>
             <Layout 
+             tipo='adm'
             >
                 <Container>
                     <Grid container

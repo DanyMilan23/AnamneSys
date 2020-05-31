@@ -115,6 +115,14 @@ export default function MenuAppBar({ tipo }) {
       onKeyDown={toggleDrawer("left", false)}
     >
       <List>
+        <Link href="/actualizacion_datos">
+          <ListItem button key="Test">
+            <ListItemIcon>
+              <FindInPageOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Actualizacion de datos" />
+          </ListItem>
+        </Link>
         <Link href="/busquedaPaciente">
           <ListItem button key="Test">
             <ListItemIcon>
@@ -123,20 +131,12 @@ export default function MenuAppBar({ tipo }) {
             <ListItemText primary="Busqueda Paciente" />
           </ListItem>
         </Link>
-        <Link href="/main">
+        <Link href="/atencion_paciente">
           <ListItem button key="Test">
             <ListItemIcon>
-              <AccountTreeOutlinedIcon />
+              <FindInPageOutlinedIcon />
             </ListItemIcon>
-            <ListItemText primary="Antecedentes" />
-          </ListItem>
-        </Link>
-        <Link href="/nuevo_historial">
-          <ListItem button key="Test">
-            <ListItemIcon>
-              <CreateNewFolderOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Nuevo Historial" />
+            <ListItemText primary="Atencion Paciente" />
           </ListItem>
         </Link>
       </List>
@@ -151,20 +151,20 @@ export default function MenuAppBar({ tipo }) {
       onKeyDown={toggleDrawer("left", false)}
     >
       <List>
-        <Link href="/busquedaPaciente">
+        <Link href="/producto_farmacia">
           <ListItem button key="Test">
             <ListItemIcon>
               <FindInPageOutlinedIcon />
             </ListItemIcon>
-            <ListItemText primary="Busqueda Paciente" />
+            <ListItemText primary="Producto Farmacia" />
           </ListItem>
         </Link>
-        <Link href="/main">
+        <Link href="/venta_farmacia">
           <ListItem button key="Test">
             <ListItemIcon>
               <AccountTreeOutlinedIcon />
             </ListItemIcon>
-            <ListItemText primary="Antecedentes" />
+            <ListItemText primary="Ventas Farmacia" />
           </ListItem>
         </Link>
       </List>

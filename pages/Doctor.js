@@ -9,7 +9,6 @@ import { FirebaseContext } from '../firebase';
 
 const main = () => {
     const { usuario, firebase } = useContext(FirebaseContext);
-    //const {user} = useUsuario(usuario.email);
 
     return (
         <>
