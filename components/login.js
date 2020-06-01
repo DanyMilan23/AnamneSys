@@ -92,7 +92,7 @@ export default function SignInSide() {
   async function iniciarSesion() {
     try {
       await firebase.login(email, password);
-      const user = firebase.db
+      /*const user = firebase.db
         .collection("Usuarios")
         .where("email", "==", email)
         .get()
@@ -116,8 +116,8 @@ export default function SignInSide() {
               Router.push("/Farmacia");
             }
           });
-        });
-     // Router.push("/main");
+        });*/
+      Router.push("/seleccion");
     } catch (error) {
       console.error("Hubo un error al autenticar el usuario ", error.message);
       guardarError(error.message);

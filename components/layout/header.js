@@ -26,7 +26,7 @@ import PermMediaOutlinedIcon from "@material-ui/icons/PermMediaOutlined";
 import PlaylistAddCheckOutlinedIcon from "@material-ui/icons/PlaylistAddCheckOutlined";
 //Context
 import useUsuario from "../../hooks/useUsuario";
-import { FirebaseContext } from "../../firebase";
+import { FirebaseContext } from "../../firebase/context";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {

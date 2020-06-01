@@ -114,6 +114,7 @@ function atencion_paciente(props) {
   ];
   //function guardar
   const handleSubmit = (e) => {
+    console.log('entro')
     e.preventDefault();
     async function crearFicha() {
       // si el usuario no esta autenticado llevar al login
@@ -243,7 +244,7 @@ function atencion_paciente(props) {
                   </MuiPickersUtilsProvider>
                 </Grid>
                 <Grid item xs={2} sm={2}>
-                  <Button variant="contained" color="primary">
+                  <Button variant="contained" color="primary" type="submit">
                     Guardar
                   </Button>
                 </Grid>
@@ -299,11 +300,5 @@ function atencion_paciente(props) {
     </>
   );
 }
-const top100Films = [
-  { title: "The Shawshank Redemption", year: 1994 },
-  { title: "The Godfather", year: 1972 },
-  { title: "The Godfather: Part II", year: 1974 },
-  { title: "The Dark Knight", year: 2008 },
-  { title: "12 Angry Men", year: 1957 }
-];
+
 export default atencion_paciente;

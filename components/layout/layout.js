@@ -3,10 +3,10 @@ import HeaderPrincipal from './header';
 import FooterFinal from './footer';
 import Head from 'next/head';
 import useUsuario from '../../hooks/useUsuario'
-import { FirebaseContext } from '../../firebase'; 
+
 
 const Layout = props => {
-    const { usuario, firebase } = useContext(FirebaseContext);
+   
     //const correo=usuario.email
     //const {user} = useUsuario(correo);
 
