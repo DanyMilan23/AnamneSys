@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState }  from 'react';
 import { useRouter } from 'next/router';
-import { FirebaseContext } from '../../firebase';
+import { FirebaseContext } from '../../firebase/index';
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Layout from '../../components/layout/layout'
@@ -22,7 +22,7 @@ const HealthService = () => {
     useEffect(() => {
         if(id && consultarDB) {
             const obtenerProducto = async () => {
-                const productoQuery = await firebase.db.collection('productos').doc(id);
+                const productoQuery = await firebase.db.collection('health_centers').doc(id);
                 const producto = await productoQuery.get();
                 if(producto.exists) {
                    guardarProducto( producto.data() );
@@ -41,7 +41,7 @@ const HealthService = () => {
     return (
         <div>
             <Layout 
-                tipo='doc'
+                //tipo='doc'
             >
                 <Container>
                     <Grid container
@@ -50,10 +50,9 @@ const HealthService = () => {
                     justify="center"
                     alignItems="center" >
                         <Grid item xs={12} sm={12}>
-                            <h1>Doctor</h1>
-                            <img src='https://firebasestorage.googleapis.com/v0/b/anamnesys-797fa.appspot.com/o/Fotos%20del%20sitio%2FLogo_2.svg?alt=media&token=eb6dcdd0-a07e-446c-b137-342caae77c7c' style={{height:400, width: 800,paddingTop:50,marginBottom:150}}/>
-                        </Grid>
-                        
+                           
+                            <img src='https://firebasestorage.googleapis.com/v0/b/anamnesys-797fa.appspot.com/o/Fotos%20del%20sitio%2FLogo_2.svg?alt=media&token=eb6dcdd0-a07e-446c-b137-342caae77c7c' style={{paddingTop:'20vh',paddingBottom:'20vh',height:'auto', width: '50vw'}}/>
+                        </Grid>            
                     </Grid>
                 </Container>
             </Layout>   

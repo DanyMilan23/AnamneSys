@@ -33,7 +33,7 @@ import useDoctores from "../hooks/useDoctores";
 import useServices from "../hooks/useServices";
 import useCitas from "../hooks/useCitas";
 //context
-import { FirebaseContext } from "../firebase";
+import { FirebaseContext } from "../firebase/index";
 //estilos
 const useStyles = makeStyles((theme) => ({
   root: {

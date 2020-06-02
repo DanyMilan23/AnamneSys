@@ -26,7 +26,8 @@ import PermMediaOutlinedIcon from "@material-ui/icons/PermMediaOutlined";
 import PlaylistAddCheckOutlinedIcon from "@material-ui/icons/PlaylistAddCheckOutlined";
 //Context
 import useUsuario from "../../hooks/useUsuario";
-import { FirebaseContext } from "../../firebase/context";
+//import { FirebaseContext } from "../../firebase";
+import firebase,{FirebaseContext} from "../../firebase/index";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -235,6 +236,7 @@ export default function MenuAppBar({ tipo }) {
     </div>
   );
 
+  if(Object.keys(datosUsuario).length === 0 )  return 'Cargando...';
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -270,11 +272,11 @@ export default function MenuAppBar({ tipo }) {
         </Toolbar>
       </AppBar>
       <Drawer open={menu.left} onClose={toggleDrawer("left", false)}>
-        {tipo == "doc" ? <MenuDoctor /> : null}
-        {tipo == "adm" ? <MenuAdmin /> : null}
-        {tipo == "enf" ? <MenuEnfermero /> : null}
-        {tipo == "far" ? <MenuFarmacia /> : null}
-        {tipo == "caj" ? <MenuCajero /> : null}
+        {datosUsuario.type == "doctor" ? <MenuDoctor /> : null}
+        {datosUsuario.type == "administrator" ? <MenuAdmin /> : null}
+        {datosUsuario.type == "nurse" ? <MenuEnfermero /> : null}
+        {datosUsuario.type == "pharmacy" ? <MenuFarmacia /> : null}
+        {datosUsuario.type == "caj" ? <MenuCajero /> : null}
       </Drawer>
     </div>
   );

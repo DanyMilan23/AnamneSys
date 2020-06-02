@@ -14,9 +14,9 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 //next dependencies
 import Router from "next/router";
-import Link from 'next/link';
+import Link from "next/link";
 //Firebase
-import { FirebaseContext } from "../firebase";
+import { FirebaseContext } from "../firebase/index";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -70,9 +70,9 @@ const seleccion = () => {
     if (datosUsuario && consultarDB) {
       guardarAccesos(datosUsuario.access);
       guardarConsultarDB(false);
-      console.log(accesos);
     }
   }, [datosUsuario]);
+    if(Object.keys(datosUsuario).length === 0 )  return 'Cargando...';
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -84,47 +84,32 @@ const seleccion = () => {
             src="https://firebasestorage.googleapis.com/v0/b/anamnesys-797fa.appspot.com/o/Fotos%20del%20sitio%2FLogo_2.svg?alt=media&token=eb6dcdd0-a07e-446c-b137-342caae77c7c"
             style={{ height: 200, width: 400 }}
           />
-          <List dense className={classes.list}>
-            {accesos.map((token) => (
-              <ListItem key={token.token} button>
-                <ListItemAvatar>
-                  <img src={token.photo} className={classes.imagen} />
-                </ListItemAvatar>
-                <ListItemText
-                  id={token.token}
-                  primary={token.name}
-                  secondary={token.type}
-                />
-                <ListItemSecondaryAction>
-                  <Link href="/healthservice/[id]" as={`/healthservice/${token.token}`}>
-                    <Button variant="contained" color="primary">
-                      Acceder
-                    </Button>
-                  </Link>
-                </ListItemSecondaryAction>
-              </ListItem>
-            ))}
-            {/*[0, 1, 2, 3].map((value) => {
-              return (
-                <ListItem key={value} button>
+          {datosUsuario ? (
+            <List dense className={classes.list}>
+              {accesos.map((token) => (
+                <ListItem key={token.token} button>
                   <ListItemAvatar>
-                    <Avatar
-                      src={`/static/images/avatar/${value + 1}.jpg`}
-                    />
+                    <img src={token.photo} className={classes.imagen} />
                   </ListItemAvatar>
                   <ListItemText
-                    //id={labelId}
-                    primary={`Line item ${value + 1}`}
+                    id={token.token}
+                    primary={token.name}
+                    secondary={token.type}
                   />
                   <ListItemSecondaryAction>
-                    <Button variant="contained" color="primary">
-                      Primary
-                    </Button>
+                    <Link
+                      href="/healthservice/[id]"
+                      as={`/healthservice/${token.token}`}
+                    >
+                      <Button variant="contained" color="primary">
+                        Acceder
+                      </Button>
+                    </Link>
                   </ListItemSecondaryAction>
                 </ListItem>
-              );
-            })*/}
-          </List>
+              ))}
+            </List>
+          ) : null}
         </div>
       </Grid>
     </Grid>

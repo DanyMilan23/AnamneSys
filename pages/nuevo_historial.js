@@ -15,7 +15,7 @@ import Button from "@material-ui/core/Button";
 import Layout from "../components/layout/layout";
 import useSintomas from "../hooks/useSintomas";
 import usePacientes from "../hooks/usePacientes";
-import { FirebaseContext } from "../firebase";
+import { FirebaseContext } from "../firebase/index";
 import Token from "../api/api";
 import axios from "axios";
 

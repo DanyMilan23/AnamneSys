@@ -21,7 +21,7 @@ import Layout from "../components/layout/layout"
 //hooks
 import useDoctores from "../hooks/useDoctores";
 //context
-import { FirebaseContext } from "../firebase";
+import { FirebaseContext } from "../firebase/index";
 
 const useStyles = makeStyles(theme => ({
   root: {

@@ -11,7 +11,7 @@ import TextField from "@material-ui/core/TextField";
 import Historial from "../components/historial";
 import Layout from "../components/layout/layout";
 import usePacientes from "../hooks/usePacientes";
-import { FirebaseContext } from "../firebase";
+import { FirebaseContext } from "../firebase/index";
 
 const historial_completo = ({pacienteId}) => {
   const [seleccion,guardarSeleccion]=useState(null);

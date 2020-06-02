@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import firebase from '../firebase';
+//import firebase from '../firebase';
+import firebase,{FirebaseContext} from "../firebase/index";
 
 function useAutenticacion() {
     const [ usuarioAutenticado, guardarUsuarioAutenticado] = useState(null);

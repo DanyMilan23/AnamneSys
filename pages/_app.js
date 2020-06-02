@@ -4,7 +4,7 @@ import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../components/theme";
-import firebase, { FirebaseContext } from "../firebase";
+import firebase,{FirebaseContext} from "../firebase/index";
 import useAutenticacion from "../hooks/useAutenticacion";
 import useUsuario from "../hooks/useUsuario";
 
@@ -25,6 +25,9 @@ const MyApp = (props) => {
   });
 
   useEffect(() => {
+    if(usuario===null){
+      guardarDatosUsuario({})
+    }
     if (usuario && consultarDB) {
       const obtenerDatos = async () => {
         const datosQuery = await firebase.db

@@ -20,7 +20,7 @@ import Layout from "../components/layout/layout";
 import usePacientes from "../hooks/usePacientes";
 import useMedicines from "../hooks/useMedicines";
 //context
-import { FirebaseContext } from "../firebase";
+import { FirebaseContext } from "../firebase/index";
 
 const useStyles = makeStyles(theme => ({
   root: {

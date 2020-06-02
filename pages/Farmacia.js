@@ -5,7 +5,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 
 import Layout from '../components/layout/layout'
 import useUsuario from '../hooks/useUsuario'
-import { FirebaseContext } from '../firebase'; 
+import { FirebaseContext } from '../firebase/index'; 
 
 const main = () => {
     const { usuario, firebase } = useContext(FirebaseContext);

@@ -16,7 +16,7 @@ import { makeStyles } from "@material-ui/core/styles";
 //next dependencies
 import Router from "next/router";
 //Firebase
-import firebase from "../firebase";
+import firebase from "../firebase/firebase";
 // validaciones
 import useValidacion from "../hooks/useValidacion";
 import useUsuario from "../hooks/useUsuario";
