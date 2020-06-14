@@ -65,7 +65,7 @@ export default function MenuAppBar({ tipo }) {
     >
       <List>
         <Link href="/busquedaPaciente">
-          <ListItem button key="Test">
+          <ListItem button key="Test" onClick={()=>{console.log('press')}}>
             <ListItemIcon>
               <FindInPageOutlinedIcon />
             </ListItemIcon>
@@ -96,12 +96,20 @@ export default function MenuAppBar({ tipo }) {
             <ListItemText primary="Historial Completo" />
           </ListItem>
         </Link>
-        <Link href="/atencion_paciente">
+        <Link href="/atencion_caja">
           <ListItem button key="Test">
             <ListItemIcon>
               <PlaylistAddCheckOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary="Atencion Paciente" />
+          </ListItem>
+        </Link>
+        <Link href="/healthservice/[id]/sub/prueba">
+          <ListItem button key="Test">
+            <ListItemIcon>
+              <PlaylistAddCheckOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Prueba" />
           </ListItem>
         </Link>
       </List>

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+  import React, { useState, useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -64,15 +64,16 @@ const useStyles = makeStyles((theme) => ({
 const seleccion = () => {
   const classes = useStyles();
   const [consultarDB, guardarConsultarDB] = useState(true);
-  const [accesos, guardarAccesos] = useState([]);
-  const { datosUsuario } = useContext(FirebaseContext);
+  const [accesos, guardarAccesos] = useState(null);
+  const { datosUsuario,usuario } = useContext(FirebaseContext);
   useEffect(() => {
-    if (datosUsuario && consultarDB) {
+    debugger;
+    if (datosUsuario.access && consultarDB) {
       guardarAccesos(datosUsuario.access);
       guardarConsultarDB(false);
     }
-  }, [datosUsuario]);
-    if(Object.keys(datosUsuario).length === 0 )  return 'Cargando...';
+  }, [datosUsuario],[usuario]);
+  if(Object.keys(datosUsuario).length === 0 )  return 'Cargando...';
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -84,9 +85,9 @@ const seleccion = () => {
             src="https://firebasestorage.googleapis.com/v0/b/anamnesys-797fa.appspot.com/o/Fotos%20del%20sitio%2FLogo_2.svg?alt=media&token=eb6dcdd0-a07e-446c-b137-342caae77c7c"
             style={{ height: 200, width: 400 }}
           />
-          {datosUsuario ? (
+          {datosUsuario.access ? (
             <List dense className={classes.list}>
-              {accesos.map((token) => (
+              {datosUsuario.access.map((token) => (
                 <ListItem key={token.token} button>
                   <ListItemAvatar>
                     <img src={token.photo} className={classes.imagen} />

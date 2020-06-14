@@ -27,6 +27,8 @@ const MyApp = (props) => {
   useEffect(() => {
     if(usuario===null){
       guardarDatosUsuario({})
+      guardarConsultarDB(true)
+      return
     }
     if (usuario && consultarDB) {
       const obtenerDatos = async () => {
@@ -47,6 +49,7 @@ const MyApp = (props) => {
           });
       };
       obtenerDatos();
+      console.log(datosUsuario)
     }
   }, [usuario]);
   return (

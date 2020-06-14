@@ -140,7 +140,7 @@ function atencion_paciente(props) {
         .catch(function (error) {
           alert("Error adding document: ", error);
         });
-      return router.push('/main');
+      return router.push('/');
     }
     // validar
     if (
