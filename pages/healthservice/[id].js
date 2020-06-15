@@ -93,7 +93,7 @@ const HealthService = () => {
         {pantalla == 'Nuevo_historial'? <Nuevo_historial/>:null}
         {pantalla == 'Historial_completo'? <Historial_completo/>:null}
         {pantalla == 'Atencion_paciente'? <Atencion_paciente id={id}/>:null}
-        {pantalla == 'Receta'? <Receta/>:null}
+        {pantalla == 'Receta'? <Receta id={id} doctor={usuario.displayName}/>:null}
 
         {pantalla == 'Actualizacion_datos'? <Actualizacion_datos/>:null}
         {pantalla == 'Atencion_caja'? <Atencion_caja2/>:null}
