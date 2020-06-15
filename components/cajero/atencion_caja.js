@@ -136,7 +136,7 @@ function atencion_caja(props) {
     async function crearFicha() {
       // si el usuario no esta autenticado llevar al login
       if (!usuario) {
-        return Router.push("/");
+        return 
       }
       // crear el objeto de nuevo producto
       const fichaData = {
@@ -147,6 +147,7 @@ function atencion_caja(props) {
         service: ficha.service,
         create: Date.now(),
       };
+      console.log(fichaData.doctor)
       // insertarlo en la base de datos
       firebase.db
         .collection("appointment_management")
@@ -157,7 +158,7 @@ function atencion_caja(props) {
         .catch(function (error) {
           alert("Error adding document: ", error);
         });
-      return router.push('/main');
+      
     }
     // validar
     if (

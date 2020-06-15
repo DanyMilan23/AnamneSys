@@ -282,11 +282,12 @@ function nuevo_historial(props) {
                       <h2 className={classes.titulos}>Diagnostico</h2>
                       {diagnosis ? (
                         <div>
-                          <p>Issues</p>
+                         
                           <p>
                             {diagnosis.data.map((sub) => (
                               <div>
-                                {console.log(sub)}
+                                
+                                 <p>Problema</p>
                                 <Chip    
                                   label={sub.Issue.Name}
                                   clickable

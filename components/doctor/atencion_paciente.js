@@ -1,4 +1,4 @@
-import React, { useState, useEffect,  useContext  } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
@@ -21,40 +21,40 @@ import DateFnsUtils from "@date-io/date-fns";
 import {
   DatePicker,
   TimePicker,
-  MuiPickersUtilsProvider
+  MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 //MediaQuerys
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 //Custom hooks
-import useUsuario from "../../hooks/useUsuario"
+import useUsuario from "../../hooks/useUsuario";
 import usePacientes from "../../hooks/usePacientes";
 import useServices from "../../hooks/useServices";
 import useCitas from "../../hooks/useCitas";
 //context
 import { FirebaseContext } from "../../firebase/index";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
     textAlign: "flex-start",
     color: theme.palette.text.secondary,
-    height: "auto"
+    height: "auto",
   },
   titulos: {
-    textAlign: "center"
+    textAlign: "center",
   },
   textField: {
-    width: "auto"
-  }
+    width: "auto",
+  },
 }));
 
-function atencion_paciente(props) {
+function atencion_paciente({ id }) {
   const classes = useStyles();
   const { usuario, firebase } = useContext(FirebaseContext);
   //leer de la base de datos los pacientes
   const { pacientes } = usePacientes();
   const { services } = useServices();
-   //cargar el autocomplete pacientes
+  //cargar el autocomplete pacientes
   let pacientesData = [];
   const Data1 = pacientes.map((paciente) => {
     pacientesData.push({
@@ -74,16 +74,19 @@ function atencion_paciente(props) {
     });
   });
   //state
-  const [citas, guardarCitas] = useState([{
+  const [citas, guardarCitas] = useState([
+    {
       patient: "",
       service: "",
       date: "",
-      imageUrl:"",
-    }]);
+      imageUrl: "",
+    },
+  ]);
   const matches = useMediaQuery("(min-width:960px)");
   const [date, changeDate] = useState(new Date());
   const [source, setSource] = useState(false);
   const [error, guardarError] = useState(false);
+  const [pacienteId, guardarPacienteId] = useState(null);
   const [ficha, setFicha] = useState({
     patient: "",
     doctor: "",
@@ -113,17 +116,16 @@ function atencion_paciente(props) {
   ];
   //function guardar
   const handleSubmit = (e) => {
-    console.log('entro')
     e.preventDefault();
     async function crearFicha() {
       // si el usuario no esta autenticado llevar al login
       if (!usuario) {
-        return router.push("/");
+        return;
       }
       // crear el objeto de nuevo producto
       const fichaData = {
         patient: ficha.patient,
-        doctor: ficha.doctor,
+        doctor: usuario.displayName,
         imageUrl: ficha.imagenUrl,
         date: date,
         service: ficha.service,
@@ -131,6 +133,8 @@ function atencion_paciente(props) {
       };
       // insertarlo en la base de datos
       firebase.db
+        .collection("health_centers")
+        .doc(id)
         .collection("appointment_management")
         .add(fichaData)
         .then(function (docRef) {
@@ -139,12 +143,22 @@ function atencion_paciente(props) {
         .catch(function (error) {
           alert("Error adding document: ", error);
         });
-      return router.push('/');
+      firebase.db
+        .collection("Usuarios")
+        .doc(pacienteId)
+        .collection("appointment_management")
+        .add(fichaData)
+        .then(function (docRef) {
+          alert("Document written with ID: ", docRef.id);
+        })
+        .catch(function (error) {
+          alert("Error adding document: ", error);
+        });
+      return ;
     }
     // validar
     if (
       ficha.patient.trim() === "" ||
-      ficha.doctor.trim() === "" ||
       ficha.imagenUrl.trim() === "" ||
       ficha.service.trim() === ""
     ) {
@@ -157,141 +171,177 @@ function atencion_paciente(props) {
   useEffect(() => {
     setSource(matches);
   }, [matches]);
-  //fichas en tiempo real 
-  useEffect(() => { 
+  //fichas en tiempo real
+  useEffect(() => {
     actualizarCitas(date);
     console.log(citas);
   }, [date]);
-  let citasData=[];
-  function actualizarCitas(fecha){
-    const fechaInicio=new Date(fecha.getFullYear()+ '-'+(fecha.getMonth()+1)+'-'+fecha.getDate());
-    const fechaFin=new Date(fecha.getFullYear()+ '-'+(fecha.getMonth()+1)+'-'+(fecha.getDate()+1));
-    firebase.db.collection('appointment_management') .where("date", ">=",fechaInicio).where("date", "<=",fechaFin).get()
-    .then((querySnapshot)=> {      
-        querySnapshot.forEach((doc)=> {
-            const tiempo =doc.data().date
-            citasData.push({
-                id:doc.id,
-                patient:doc.data().patient,
-                doctor:doc.data().doctor,
-                imageUrl:doc.data().imageUrl,
-                date:new Date(tiempo * 1000),
-                service:doc.data().service,
-                create:doc.data().create,
-            })
-            guardarCitas(citasData);
-        })
-    })
-    .catch(function(error) {
+  let citasData = [];
+  function actualizarCitas(fecha) {
+    const fechaInicio = new Date(
+      fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate()
+    );
+    const fechaFin = new Date(
+      fecha.getFullYear() +
+        "-" +
+        (fecha.getMonth() + 1) +
+        "-" +
+        (fecha.getDate() + 1)
+    );
+    firebase.db
+      .collection("health_centers")
+      .doc(id)
+      .collection("appointment_management")
+      .where("date", ">=", fechaInicio)
+      .where("date", "<=", fechaFin)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          const tiempo = doc.data().date;
+          citasData.push({
+            id: doc.id,
+            patient: doc.data().patient,
+            doctor: doc.data().doctor,
+            imageUrl: doc.data().imageUrl,
+            date: new Date(tiempo * 1000),
+            service: doc.data().service,
+            create: doc.data().create,
+          });
+          guardarCitas(citasData);
+        });
+      })
+      .catch(function (error) {
         console.log("Error getting documents: ", error);
-    });
+      });
   }
   return (
     <>
       <CssBaseline />
       <Container fixed>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
-        <Grid
-          container
-          spacing={1}
-          direction="row"
-          justify="flex-start"
-          alignItems="flex-start"
-        >
-          <Grid item xs={12} sm={12}>
-            <h1>Atencion de Paciente</h1>
-          </Grid>
-          <Grid item xs={12} sm={12}>
-            <Paper className={classes.paper} elevation={3}>
-              <Grid
-                container
-                spacing={2}
-                direction="row"
-                justify="flex-start"
-                alignItems="flex-start"
-              >
-                <Grid item xs={10} sm={6}>
-                  <Autocomplete
-                    id="patient"
-                    name="patient"
-                    options={pacientesData}
-                    getOptionLabel={option => option.title}
-                    style={{ width: "auto" }}
-                    renderInput={params => (
-                      <TextField
-                        {...params}
-                        label="Busqueda de Pacientes"
-                        variant="outlined"
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={1} sm={1}>
-                  <Fab color="primary" aria-label="add">
-                    <SearchIcon />
-                  </Fab>
-                </Grid>
-                <Grid item xs={2} sm={2}>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <TimePicker
-                      variant="inline"
-                      label="Inline mode"
-                      value={date}
-                      onChange={changeDate}
+          <Grid
+            container
+            spacing={1}
+            direction="row"
+            justify="flex-start"
+            alignItems="flex-start"
+          >
+            <Grid item xs={12} sm={12}>
+              <h1>Atencion de Paciente</h1>
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <Paper className={classes.paper} elevation={3}>
+                <Grid
+                  container
+                  spacing={2}
+                  direction="row"
+                  justify="flex-start"
+                  alignItems="flex-start"
+                >
+                  <Grid item xs={10} sm={6}>
+                    <Autocomplete
+                      id="patient"
+                      name="patient"
+                      options={pacientesData}
+                      getOptionLabel={(option) => option.title}
+                      style={{ width: "auto" }}
+                      onChange={(event, value) => {
+                        if (value != null) {
+                          setFicha({
+                            ...ficha,
+                            patient:
+                              value.data.first_name +
+                              " " +
+                              value.data.last_name,
+                            imagenUrl: value.data.photo,
+                          });
+                          guardarPacienteId(value.id);
+                        } else {
+                          setFicha({ ...ficha, patient: "" });
+                          guardarPacienteId(null);
+                        }
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Busqueda de Pacientes"
+                          variant="outlined"
+                        />
+                      )}
                     />
-                  </MuiPickersUtilsProvider>
-                </Grid>
-                <Grid item xs={2} sm={2}>
-                  <Button variant="contained" color="primary" type="submit">
-                    Guardar
-                  </Button>
-                </Grid>
-                <Grid item xs={12} sm={3}>
-                   <Autocomplete
-                    id="service"
-                    name="service"
-                    options={servicesData}
-                    getOptionLabel={option => option.title}
-                    style={{ width: "auto" }}
-                    renderInput={params => (
-                      <TextField
-                        {...params}
-                        label="Servicios"
-                        variant="outlined"
-                      />
-                    )}
-                  />
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    {source ? (
-                      <DatePicker
-                        autoOk
-                        variant="static"
-                        openTo="date"
-                        value={date}
-                        onChange={changeDate}
-                      />
-                    ) : (
-                      <DatePicker
+                  </Grid>
+                  <Grid item xs={1} sm={1}>
+                    <Fab color="primary" aria-label="add">
+                      <SearchIcon />
+                    </Fab>
+                  </Grid>
+                  <Grid item xs={2} sm={2}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <TimePicker
                         variant="inline"
-                        label="Hora"
+                        label="Inline mode"
                         value={date}
                         onChange={changeDate}
                       />
-                    )}
-                  </MuiPickersUtilsProvider>
+                    </MuiPickersUtilsProvider>
+                  </Grid>
+                  <Grid item xs={2} sm={2}>
+                    <Button variant="contained" color="primary" type="submit">
+                      Guardar
+                    </Button>
+                  </Grid>
+                  <Grid item xs={12} sm={3}>
+                    <Autocomplete
+                      id="service"
+                      name="service"
+                      options={servicesData}
+                      getOptionLabel={(option) => option.title}
+                      style={{ width: "auto" }}
+                      onChange={(event, value) => {
+                        if (value != null) {
+                          setFicha({
+                            ...ficha,
+                            service: value.data.name,
+                          });
+                        } else {
+                          setFicha({ ...ficha, service: "" });
+                        }
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Servicios"
+                          variant="outlined"
+                        />
+                      )}
+                    />
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      {source ? (
+                        <DatePicker
+                          autoOk
+                          variant="static"
+                          openTo="date"
+                          value={date}
+                          onChange={changeDate}
+                        />
+                      ) : (
+                        <DatePicker
+                          variant="inline"
+                          label="Hora"
+                          value={date}
+                          onChange={changeDate}
+                        />
+                      )}
+                    </MuiPickersUtilsProvider>
+                  </Grid>
+                  <Grid item xs={1} sm={1}></Grid>
+                  <Grid item xs={7} sm={7}>
+                    <MaterialTable title="Citas" columns={title} data={citas} />
+                  </Grid>
                 </Grid>
-                <Grid item xs={1} sm={1}></Grid>
-                <Grid item xs={7} sm={7}>
-                  <MaterialTable
-                    title="Citas"
-                    columns={title}
-                    data={citas}
-                  />
-                </Grid>
-              </Grid>
-            </Paper>
+              </Paper>
+            </Grid>
           </Grid>
-        </Grid>
         </form>
       </Container>
     </>

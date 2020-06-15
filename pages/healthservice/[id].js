@@ -92,7 +92,7 @@ const HealthService = () => {
         {pantalla == 'Antecedentes'? <Antecedente/>:null}
         {pantalla == 'Nuevo_historial'? <Nuevo_historial/>:null}
         {pantalla == 'Historial_completo'? <Historial_completo/>:null}
-        {pantalla == 'Atencion_paciente'? <Atencion_paciente/>:null}
+        {pantalla == 'Atencion_paciente'? <Atencion_paciente id={id}/>:null}
         {pantalla == 'Receta'? <Receta/>:null}
 
         {pantalla == 'Actualizacion_datos'? <Actualizacion_datos/>:null}

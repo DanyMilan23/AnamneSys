@@ -224,7 +224,7 @@ export default function MenuAppBar({ cambiar }) {
         <ListItem
           button
           onClick={() => {
-            cambiar("Atencion_caja");
+            cambiar("Atencion_caja2");
           }}
         >
           <ListItemIcon>
