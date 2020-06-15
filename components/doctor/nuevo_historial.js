@@ -12,11 +12,10 @@ import Chip from "@material-ui/core/Chip";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Button from "@material-ui/core/Button";
 //layout
-import Layout from "../components/layout/layout";
-import useSintomas from "../hooks/useSintomas";
-import usePacientes from "../hooks/usePacientes";
-import { FirebaseContext } from "../firebase/index";
-import Token from "../api/api";
+import useSintomas from "../../hooks/useSintomas";
+import usePacientes from "../../hooks/usePacientes";
+import { FirebaseContext } from "../../firebase/index";
+import Token from "../../api/api";
 import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
@@ -126,7 +125,6 @@ function nuevo_historial(props) {
   return (
     <>
       <CssBaseline />
-      <Layout>
         <Container fixed>
           <form className={classes.form} noValidate onSubmit={handleSubmit}>
             <Grid
@@ -351,7 +349,6 @@ function nuevo_historial(props) {
             </Grid>
           </form>
         </Container>
-      </Layout>
     </>
   );
 }

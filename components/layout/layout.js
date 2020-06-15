@@ -20,7 +20,7 @@ const Layout = props => {
                 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
             </Head>
 
-            <HeaderPrincipal/>
+            <HeaderPrincipal cambiar={props.funcion}/>
             <main>
                 {props.children}
             </main>

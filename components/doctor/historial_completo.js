@@ -8,10 +8,9 @@ import Grid from "@material-ui/core/Grid";
 import MaterialTable from "material-table";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
-import Historial from "../components/historial";
-import Layout from "../components/layout/layout";
-import usePacientes from "../hooks/usePacientes";
-import { FirebaseContext } from "../firebase/index";
+import Historial from "../historial";
+import usePacientes from "../../hooks/usePacientes";
+import { FirebaseContext } from "../../firebase/index";
 
 const historial_completo = ({pacienteId}) => {
   const [seleccion,guardarSeleccion]=useState(null);
@@ -82,7 +81,6 @@ const historial_completo = ({pacienteId}) => {
   return (
     <>
       <CssBaseline />
-      <Layout>
       <Container fixed>
         <Grid
           container
@@ -142,8 +140,7 @@ const historial_completo = ({pacienteId}) => {
             />
           </Grid>
         </Grid>
-      </Container>
-      </Layout>
+      </Container>  
     </>
   );
 };

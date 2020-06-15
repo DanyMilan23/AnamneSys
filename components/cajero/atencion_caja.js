@@ -25,15 +25,13 @@ import {
 } from "@material-ui/pickers";
 //MediaQuerys
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-//layout
-import Layout from "../components/layout/layout";
 //hooks
-import usePacientes from "../hooks/usePacientes";
-import useDoctores from "../hooks/useDoctores";
-import useServices from "../hooks/useServices";
-import useCitas from "../hooks/useCitas";
+import usePacientes from "../../hooks/usePacientes";
+import useDoctores from "../../hooks/useDoctores";
+import useServices from "../../hooks/useServices";
+import useCitas from "../../hooks/useCitas";
 //context
-import { FirebaseContext } from "../firebase/index";
+import { FirebaseContext } from "../../firebase/index";
 //estilos
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -205,7 +203,6 @@ function atencion_caja(props) {
   return (
     <>
       <CssBaseline />
-      <Layout>
       <Container fixed>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <Grid
@@ -380,7 +377,6 @@ function atencion_caja(props) {
           </Grid>
         </form>
       </Container>
-      </Layout>
     </>
   );
 }

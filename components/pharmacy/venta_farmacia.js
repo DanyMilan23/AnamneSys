@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
-import Router from 'next/router';
+import React, { useState, useEffect,useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import Router from 'next/router';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
@@ -14,127 +14,86 @@ import Fab from "@material-ui/core/Fab";
 import Button from "@material-ui/core/Button";
 //iconos
 import AddIcon from "@material-ui/icons/Add";
-import MUIDataTable from "mui-datatables";
-import Layout from "../components/layout/layout";
+import MaterialTable from "material-table";
 //custom hooks
-import usePacientes from "../hooks/usePacientes";
-import useServices from "../hooks/useServices";
-import useCitas from "../hooks/useCitas";
+import usePacientes from "../../hooks/usePacientes";
+import useMedicines from "../../hooks/useMedicines";
 //context
-import { FirebaseContext } from "../firebase/index";
+import { FirebaseContext } from "../../firebase/index";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   paper: {
     padding: theme.spacing(2),
     textAlign: "flex-start",
     color: theme.palette.text.secondary,
-    height: "auto",
+    height: "auto"
   },
   imagen: {
     width: "auto",
-    height: "auto",
+    height: "auto"
   },
   titulos: {
-    textAlign: "center",
-  },
+    textAlign: "center"
+  }
 }));
-function transaccion_caja(props) {
+function venta_farmacia(props) {
   const classes = useStyles();
-  const { usuario, firebase } = useContext(FirebaseContext);
+   const { usuario, firebase } = useContext(FirebaseContext);
   //leer de la base de datos los pacientes
-  const { pacientes } = usePacientes();
-  const { services } = useServices();
-  //cargar el autocomplete pacientes
-  let pacientesData = [];
-  const Data1 = pacientes.map((paciente) => {
-    pacientesData.push({
-      title:
-        paciente.ci + "  " + paciente.first_name + "  " + paciente.last_name,
-      id: paciente.id,
-      data: paciente,
-    });
-  });
+  const { medicinas } = useMedicines();
   //cargar el autocomplete service
-  let servicesData = [];
-  const Data3 = services.map((service) => {
-    servicesData.push({
-      title: service.name + "  " + service.cost + " Bs",
-      id: service.id,
-      data: service,
+  let madecineData = [];
+  const Data3 = medicinas.map((medicine) => {
+    madecineData.push({
+      title: medicine.name + "  " + medicine.cost + " Bs",
+      id: medicine.id,
+      data: medicine,
     });
   });
 
-  const [sale, guardarSale] = useState({
-    patient: "",
+  const [sale, setSale] = useState({
     ci: "",
     name_facture: "",
   });
-  const [servicio, guardarServicio] = useState({
-    service: "",
+  const [medicine, setMedicine] = useState({
+    medicine: "",
     cost: "",
     quantity: "",
     total: "",
+    description:"",
   });
-  const [dataServices, setDataServices] = useState({ services: [] });
-  let data = [];
-  const columns = [
-    {
-      name: "service",
-      label: "Servicio",
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: "quantity",
-      label: "Cantidad",
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: "cost",
-      label: "Costo Unitario",
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: "total",
-      label: "Total",
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-  ];
+  const [dataMedicines, setDataMedicines] = useState({ medicines: [] });
   useEffect(() => {
-    if (servicio.cost !== "" && servicio.quantity !== "") {
-      guardarServicio({
-        ...servicio,
-        total: parseInt(servicio.quantity) * parseInt(servicio.cost),
+    if (medicine.cost !== "" && medicine.quantity !== "") {
+      setMedicine({
+        ...medicine,
+        total: parseInt(medicine.quantity) * parseInt(medicine.cost),
       });
     }
-  }, [servicio.cost, servicio.quantity]);
+  }, [medicine.cost, medicine.quantity]);
 
-  const options = {
-    filterType: "dropdown",
-    responsive: "scroll",
-  };
+    const columns= [
+      { title: "Nombre", field: "medicine" },
+      { title: "Cantidad", field: "quantity" },
+      { title: "Precio Unitario", field: "cost", type: "numeric" },
+      { title: "Descripcion", field: "description" },
+      { title: "Indicaciones", field: "indicacion" },
+       { title: "Total", field: "total", type: "numeric" },
+    ]
+
+
   function addService() {
-    setDataServices({ services: [...dataServices.services, servicio] });
-    guardarServicio({
-      ...servicio,
+    setDataMedicines({ medicines: [...dataMedicines.medicines, medicine] });
+    setMedicine({
+      ...medicine,
       service: "",
       cost: "",
       quantity: "",
       total: "",
+      description:"",
     });
   }
   function addSale() {
@@ -146,7 +105,7 @@ function transaccion_caja(props) {
       // crear el objeto de nuevo producto
      
       let alltotal=0;
-      const allServices=dataServices.services
+      const allServices=dataMedicines.medicines
       
       allServices.map((val)=>{
           console.log(val.total)
@@ -154,10 +113,10 @@ function transaccion_caja(props) {
       })
      
       const salesData = {
-        patient:sale.patient,
         ci:sale.ci,
         name_facture:sale.name_facture,
         services:allServices,
+        //description:sale.description,
         total:alltotal,
       };
      
@@ -175,11 +134,9 @@ function transaccion_caja(props) {
     }
     newSale();
   }
-
   return (
     <>
       <CssBaseline />
-      {/*<Layout>*/}
       <Container fixed>
         <Grid
           container
@@ -189,7 +146,7 @@ function transaccion_caja(props) {
           alignItems="flex-start"
         >
           <Grid item xs={12} sm={12}>
-            <h1>Caja</h1>
+            <h1>Venta Farmacia</h1>
           </Grid>
           <Grid item xs={12} sm={12}>
             <Paper className={classes.paper} elevation={3}>
@@ -200,53 +157,28 @@ function transaccion_caja(props) {
                 justify="flex-start"
                 alignItems="flex-start"
               >
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12} sm={8}>
                   <Autocomplete
-                    id="pacientes"
-                    options={pacientesData}
+                    id="medicine"
+                    options={madecineData}
                     getOptionLabel={(option) => option.title}
                     style={{ width: "auto" }}
                     onChange={(event, value) => {
                       if (value != null) {
-                        guardarSale({
-                          ...sale,
-                          patient:
-                            value.data.first_name + " " + value.data.last_name,
-                        });
-                      } else {
-                        setFicha({ ...ficha, patient: "" });
-                      }
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Busqueda de Pacientes"
-                        variant="outlined"
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Autocomplete
-                    id="services"
-                    options={servicesData}
-                    getOptionLabel={(option) => option.title}
-                    style={{ width: "auto" }}
-                    onChange={(event, value) => {
-                      if (value != null) {
-                        guardarServicio({
-                          ...servicio,
-                          service: value.data.name,
+                        setMedicine({
+                          ...medicine,
+                          medicine: value.data.name,
                           cost: value.data.cost,
+                          description:value.data.description,
                         });
                       } else {
-                        guardarServicio({ ...servicio, patient: "" });
+                        setMedicine({ ...medicine, medicine: "" });
                       }
                     }}
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Servicios"
+                        label="Busqueda Medicinas"
                         variant="outlined"
                       />
                     )}
@@ -260,8 +192,8 @@ function transaccion_caja(props) {
                     type="number"
                     min="0"
                     onChange={(e) => {
-                      guardarServicio({
-                        ...servicio,
+                      setMedicine({
+                        ...medicine,
                         quantity: e.target.value,
                       });
                     }}
@@ -286,7 +218,7 @@ function transaccion_caja(props) {
                     variant="outlined"
                     fullWidth
                     onChange={(e) => {
-                      guardarSale({
+                      setSale({
                         ...sale,
                         name_facture: e.target.value,
                       });
@@ -300,27 +232,58 @@ function transaccion_caja(props) {
                     fullWidth
                     variant="outlined"
                     onChange={(e) => {
-                      guardarSale({
+                      setSale({
                         ...sale,
                         ci: e.target.value,
                       });
                     }}
                   />
                 </Grid>
-                <Grid item xs={12} sm={11}>
-                  <MUIDataTable
-                    title={"Factura"}
-                    data={dataServices.services}
+                <Grid item xs={11} sm={11}>
+                  <MaterialTable
+                    title="Editable Example"
                     columns={columns}
-                    options={options}
+                    data={dataMedicines.medicines}
+                    editable={{
+                      onRowAdd: newData =>
+                        new Promise(resolve => {
+                          setTimeout(() => {
+                            resolve();
+                            setState(prevState => {
+                              const data = [...prevState.data];
+                              data.push(newData);
+                              return { ...prevState, data };
+                            });
+                          }, 600);
+                        }),
+                      onRowUpdate: (newData, oldData) =>
+                        new Promise(resolve => {
+                          setTimeout(() => {
+                            resolve();
+                            if (oldData) {
+                              setState(prevState => {
+                                const data = [...prevState.data];
+                                data[data.indexOf(oldData)] = newData;
+                                return { ...prevState, data };
+                              });
+                            }
+                          }, 600);
+                        }),
+                      onRowDelete: oldData =>
+                        new Promise(resolve => {
+                          setTimeout(() => {
+                            resolve();
+                            setState(prevState => {
+                              const data = [...prevState.data];
+                              data.splice(data.indexOf(oldData), 1);
+                              return { ...prevState, data };
+                            });
+                          }, 600);
+                        })
+                    }}
                   />
                 </Grid>
-                <Grid item xs={0} sm={7} />
-                <Grid item xs={12} sm={2}>
-                  <Button variant="contained" color="secondary" fullWidth>
-                    Guardar ficha
-                  </Button>
-                </Grid>
+                <Grid item xs={0} sm={9}/>
                 <Grid item xs={12} sm={2}>
                   <Button
                     variant="contained"
@@ -339,9 +302,8 @@ function transaccion_caja(props) {
           </Grid>
         </Grid>
       </Container>
-      {/*</Layout>*/}
     </>
   );
 }
 
-export default transaccion_caja;
+export default venta_farmacia;

@@ -8,7 +8,6 @@ import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
 //table
 import MUIDataTable from "mui-datatables";
-import Layout from "../components/layout/layout"
 
 producto_farmacia.propTypes = {};
 
@@ -31,7 +30,6 @@ function producto_farmacia(props) {
   return (
     <>
       <CssBaseline />
-      <Layout>
       <Container fixed>
         <Grid
           container
@@ -50,7 +48,6 @@ function producto_farmacia(props) {
           </Grid>
         </Grid>
       </Container>
-      </Layout>
     </>
   );
 }

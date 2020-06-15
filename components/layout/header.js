@@ -27,7 +27,7 @@ import PlaylistAddCheckOutlinedIcon from "@material-ui/icons/PlaylistAddCheckOut
 //Context
 import useUsuario from "../../hooks/useUsuario";
 //import { FirebaseContext } from "../../firebase";
-import firebase,{FirebaseContext} from "../../firebase/index";
+import firebase, { FirebaseContext } from "../../firebase/index";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MenuAppBar({ tipo }) {
+export default function MenuAppBar({ cambiar }) {
   const classes = useStyles();
   const { usuario, firebase, datosUsuario } = useContext(FirebaseContext);
   //states
@@ -64,54 +64,72 @@ export default function MenuAppBar({ tipo }) {
       onKeyDown={toggleDrawer("left", false)}
     >
       <List>
-        <Link href="/busquedaPaciente">
-          <ListItem button key="Test" onClick={()=>{console.log('press')}}>
-            <ListItemIcon>
-              <FindInPageOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Busqueda Paciente" />
-          </ListItem>
-        </Link>
-        <Link href="/main">
-          <ListItem button key="Test">
-            <ListItemIcon>
-              <AccountTreeOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Antecedentes" />
-          </ListItem>
-        </Link>
-        <Link href="/nuevo_historial">
-          <ListItem button key="Test">
-            <ListItemIcon>
-              <CreateNewFolderOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Nuevo Historial" />
-          </ListItem>
-        </Link>
-        <Link href="/historial_completo">
-          <ListItem button key="Test">
-            <ListItemIcon>
-              <PermMediaOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Historial Completo" />
-          </ListItem>
-        </Link>
-        <Link href="/atencion_caja">
-          <ListItem button key="Test">
-            <ListItemIcon>
-              <PlaylistAddCheckOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Atencion Paciente" />
-          </ListItem>
-        </Link>
-        <Link href="/healthservice/[id]/sub/prueba">
-          <ListItem button key="Test">
-            <ListItemIcon>
-              <PlaylistAddCheckOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Prueba" />
-          </ListItem>
-        </Link>
+        <ListItem
+          button
+          onClick={() => {
+            cambiar("Busqueda_paciente");
+          }}
+        >
+          <ListItemIcon>
+            <FindInPageOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Busqueda Paciente" />
+        </ListItem>
+        <ListItem
+          button
+          onClick={() => {
+            cambiar("Antecedentes");
+          }}
+        >
+          <ListItemIcon>
+            <AccountTreeOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Antecedentes" />
+        </ListItem>
+        <ListItem
+          button
+          onClick={() => {
+            cambiar("Nuevo_historial");
+          }}
+        >
+          <ListItemIcon>
+            <CreateNewFolderOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Nuevo Historial" />
+        </ListItem>
+        <ListItem
+          button
+          onClick={() => {
+            cambiar("Historial_completo");
+          }}
+        >
+          <ListItemIcon>
+            <PermMediaOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Historial Completo" />
+        </ListItem>
+        <ListItem
+          button
+          onClick={() => {
+            cambiar("Atencion_paciente");
+          }}
+        >
+          <ListItemIcon>
+            <PlaylistAddCheckOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Atencion Paciente" />
+        </ListItem>
+        <ListItem
+          button
+          onClick={() => {
+            cambiar("Receta");
+          }}
+        >
+          <ListItemIcon>
+            <PlaylistAddCheckOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Receta" />
+        </ListItem>
       </List>
     </div>
   );
@@ -124,30 +142,39 @@ export default function MenuAppBar({ tipo }) {
       onKeyDown={toggleDrawer("left", false)}
     >
       <List>
-        <Link href="/actualizacion_datos">
-          <ListItem button key="Test">
-            <ListItemIcon>
-              <FindInPageOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Actualizacion de datos" />
-          </ListItem>
-        </Link>
-        <Link href="/busquedaPaciente">
-          <ListItem button key="Test">
-            <ListItemIcon>
-              <FindInPageOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Busqueda Paciente" />
-          </ListItem>
-        </Link>
-        <Link href="/atencion_paciente">
-          <ListItem button key="Test">
-            <ListItemIcon>
-              <FindInPageOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Atencion Paciente" />
-          </ListItem>
-        </Link>
+        <ListItem
+          button
+          onClick={() => {
+            cambiar("Actualizacion_datos");
+          }}
+        >
+          <ListItemIcon>
+            <FindInPageOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Actualizacion de datos" />
+        </ListItem>
+        <ListItem
+          button
+          onClick={() => {
+            cambiar("Atencion_caja");
+          }}
+        >
+          <ListItemIcon>
+            <FindInPageOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Atencion Caja" />
+        </ListItem>
+        <ListItem
+          button
+          onClick={() => {
+            cambiar("Busqueda_doctor");
+          }}
+        >
+          <ListItemIcon>
+            <FindInPageOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Busqueda Doctor" />
+        </ListItem>
       </List>
     </div>
   );
@@ -160,22 +187,28 @@ export default function MenuAppBar({ tipo }) {
       onKeyDown={toggleDrawer("left", false)}
     >
       <List>
-        <Link href="/producto_farmacia">
-          <ListItem button key="Test">
-            <ListItemIcon>
-              <FindInPageOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Producto Farmacia" />
-          </ListItem>
-        </Link>
-        <Link href="/venta_farmacia">
-          <ListItem button key="Test">
-            <ListItemIcon>
-              <AccountTreeOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Ventas Farmacia" />
-          </ListItem>
-        </Link>
+        <ListItem
+          button
+          onClick={() => {
+            cambiar("Producto_farmacia");
+          }}
+        >
+          <ListItemIcon>
+            <FindInPageOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Producto Farmacia" />
+        </ListItem>
+        <ListItem
+          button
+          onClick={() => {
+            cambiar("Ventas_farmacia");
+          }}
+        >
+          <ListItemIcon>
+            <AccountTreeOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Ventas Farmacia" />
+        </ListItem>
       </List>
     </div>
   );
@@ -188,22 +221,28 @@ export default function MenuAppBar({ tipo }) {
       onKeyDown={toggleDrawer("left", false)}
     >
       <List>
-        <Link href="/busquedaPaciente">
-          <ListItem button key="Test">
-            <ListItemIcon>
-              <FindInPageOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Busqueda Paciente" />
-          </ListItem>
-        </Link>
-        <Link href="/main">
-          <ListItem button key="Test">
-            <ListItemIcon>
-              <AccountTreeOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Antecedentes" />
-          </ListItem>
-        </Link>
+        <ListItem
+          button
+          onClick={() => {
+            cambiar("Atencion_caja");
+          }}
+        >
+          <ListItemIcon>
+            <FindInPageOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Atencion Caja" />
+        </ListItem>
+        <ListItem
+          button
+          onClick={() => {
+            cambiar("Transaccion_caja");
+          }}
+        >
+          <ListItemIcon>
+            <AccountTreeOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Transaccion Caja" />
+        </ListItem>
       </List>
     </div>
   );
@@ -244,7 +283,7 @@ export default function MenuAppBar({ tipo }) {
     </div>
   );
 
-  if(Object.keys(datosUsuario).length === 0 )  return 'Cargando...';
+  if (Object.keys(datosUsuario).length === 0) return "Cargando...";
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -281,10 +320,10 @@ export default function MenuAppBar({ tipo }) {
       </AppBar>
       <Drawer open={menu.left} onClose={toggleDrawer("left", false)}>
         {datosUsuario.type == "doctor" ? <MenuDoctor /> : null}
-        {datosUsuario.type == "administrator" ? <MenuAdmin /> : null}
+        {datosUsuario.type == "cajero" ? <MenuAdmin /> : null}
         {datosUsuario.type == "nurse" ? <MenuEnfermero /> : null}
         {datosUsuario.type == "pharmacy" ? <MenuFarmacia /> : null}
-        {datosUsuario.type == "caj" ? <MenuCajero /> : null}
+        {datosUsuario.type == "administrator" ? <MenuCajero /> : null}
       </Drawer>
     </div>
   );
