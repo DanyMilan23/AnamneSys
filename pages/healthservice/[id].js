@@ -22,6 +22,10 @@ import Venta_farmacia from "../../components/pharmacy/venta_farmacia";
 //Cajero Components
 import Atencion_caja from "../../components/cajero/atencion_caja";
 import Transaccion_caja from "../../components/cajero/transaccion_caja";
+//admin comoponents
+import AdminPaciente from "../../components/administrador/crudPacientes"
+import AdminEnfermero from "../../components/administrador/crudEnfermero"
+import AdminDoctor from "../../components/administrador/crudDoctor"
 
 const HealthService = () => {
   // state del componente
@@ -105,6 +109,9 @@ const HealthService = () => {
         {pantalla == 'Atencion_caja2'? <Atencion_caja/>:null}
         {pantalla == 'Transaccion_caja'? <Transaccion_caja/>:null}
 
+        {pantalla == 'Admin_paciente'? <AdminPaciente/>:null}
+        {pantalla == 'Admin_doc'? <AdminDoctor/>:null}
+        {pantalla == 'Admin_enfer'? <AdminEnfermero/>:null}
       </Layout>
     </div>
   );

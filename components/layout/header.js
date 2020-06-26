@@ -255,30 +255,39 @@ export default function MenuAppBar({ cambiar }) {
       onKeyDown={toggleDrawer("left", false)}
     >
       <List>
-        <Link href="/busquedaPaciente">
-          <ListItem button key="Test">
-            <ListItemIcon>
-              <FindInPageOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Busqueda Paciente" />
-          </ListItem>
-        </Link>
-        <Link href="/main">
-          <ListItem button key="Test">
-            <ListItemIcon>
-              <AccountTreeOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Antecedentes" />
-          </ListItem>
-        </Link>
-        <Link href="/nuevo_historial">
-          <ListItem button key="Test">
-            <ListItemIcon>
-              <CreateNewFolderOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Nuevo Historial" />
-          </ListItem>
-        </Link>
+        <ListItem
+          button
+          onClick={() => {
+            cambiar("Admin_paciente");
+          }}
+        >
+          <ListItemIcon>
+            <FindInPageOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Administracion Paciente" />
+        </ListItem>
+        <ListItem
+          button
+          onClick={() => {
+            cambiar("Admin_doc");
+          }}
+        >
+          <ListItemIcon>
+            <AccountTreeOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Administracion Doctores" />
+        </ListItem>
+        <ListItem
+          button
+          onClick={() => {
+            cambiar("Admin_enfer");
+          }}
+        >
+          <ListItemIcon>
+            <CreateNewFolderOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Administracion Enfermeros" />
+        </ListItem>
       </List>
     </div>
   );
@@ -320,10 +329,10 @@ export default function MenuAppBar({ cambiar }) {
       </AppBar>
       <Drawer open={menu.left} onClose={toggleDrawer("left", false)}>
         {datosUsuario.type == "doctor" ? <MenuDoctor /> : null}
-        {datosUsuario.type == "cajero" ? <MenuAdmin /> : null}
+        {datosUsuario.type == "cajero" ? <MenuCajero /> : null}
         {datosUsuario.type == "nurse" ? <MenuEnfermero /> : null}
         {datosUsuario.type == "pharmacy" ? <MenuFarmacia /> : null}
-        {datosUsuario.type == "administrator" ? <MenuCajero /> : null}
+        {datosUsuario.type == "administrator" ? <MenuAdmin /> : null}
       </Drawer>
     </div>
   );
