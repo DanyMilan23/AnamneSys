@@ -86,19 +86,21 @@ function atencion_caja(props) {
       data: service,
     });
   });
-  
+
   //Media Query
   const matches = useMediaQuery("(min-width:960px)");
   useEffect(() => {
     setSource(matches);
   }, [matches]);
   //State
-  const [citas, guardarCitas] = useState([{
+  const [citas, guardarCitas] = useState([
+    {
       patient: "",
       service: "",
       date: "",
-      imageUrl:"",
-    }]);
+      imageUrl: "",
+    },
+  ]);
   const [source, setSource] = useState(false);
   const [error, guardarError] = useState(false);
   const [date, changeDate] = useState(new Date());
@@ -136,7 +138,7 @@ function atencion_caja(props) {
     async function crearFicha() {
       // si el usuario no esta autenticado llevar al login
       if (!usuario) {
-        return 
+        return;
       }
       // crear el objeto de nuevo producto
       const fichaData = {
@@ -147,7 +149,7 @@ function atencion_caja(props) {
         service: ficha.service,
         create: Date.now(),
       };
-      console.log(fichaData.doctor)
+      console.log(fichaData.doctor);
       // insertarlo en la base de datos
       firebase.db
         .collection("appointment_management")
@@ -158,7 +160,6 @@ function atencion_caja(props) {
         .catch(function (error) {
           alert("Error adding document: ", error);
         });
-      
     }
     // validar
     if (
@@ -172,34 +173,46 @@ function atencion_caja(props) {
     }
     crearFicha();
   };
-  //fichas en tiempo real 
-  useEffect(() => { 
+  //fichas en tiempo real
+  useEffect(() => {
     actualizarCitas(date);
     console.log(citas);
   }, [date]);
-  let citasData=[];
-  function actualizarCitas(fecha){
-    const fechaInicio=new Date(fecha.getFullYear()+ '-'+(fecha.getMonth()+1)+'-'+fecha.getDate());
-    const fechaFin=new Date(fecha.getFullYear()+ '-'+(fecha.getMonth()+1)+'-'+(fecha.getDate()+1));
-    firebase.db.collection('appointment_management') .where("date", ">=",fechaInicio).where("date", "<=",fechaFin).get()
-    .then((querySnapshot)=> {      
-        querySnapshot.forEach((doc)=> {
-            const tiempo =doc.data().date
-            citasData.push({
-                id:doc.id,
-                patient:doc.data().patient,
-                doctor:doc.data().doctor,
-                imageUrl:doc.data().imageUrl,
-                date:new Date(tiempo * 1000),
-                service:doc.data().service,
-                create:doc.data().create,
-            })
-            guardarCitas(citasData);
-        })
-    })
-    .catch(function(error) {
+  let citasData = [];
+  function actualizarCitas(fecha) {
+    const fechaInicio = new Date(
+      fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate()
+    );
+    const fechaFin = new Date(
+      fecha.getFullYear() +
+        "-" +
+        (fecha.getMonth() + 1) +
+        "-" +
+        (fecha.getDate() + 1)
+    );
+    firebase.db
+      .collection("appointment_management")
+      .where("date", ">=", fechaInicio)
+      .where("date", "<=", fechaFin)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          const tiempo = doc.data().date;
+          citasData.push({
+            id: doc.id,
+            patient: doc.data().patient,
+            doctor: doc.data().doctor,
+            imageUrl: doc.data().imageUrl,
+            date: new Date(tiempo * 1000),
+            service: doc.data().service,
+            create: doc.data().create,
+          });
+          guardarCitas(citasData);
+        });
+      })
+      .catch(function (error) {
         console.log("Error getting documents: ", error);
-    });
+      });
   }
   return (
     <>
