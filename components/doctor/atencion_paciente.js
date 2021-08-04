@@ -123,6 +123,8 @@ function atencion_paciente({ id }) {
         return;
       }
       // crear el objeto de nuevo producto
+      console.log("date", date);
+      console.log("type date", typeof date);
       const fichaData = {
         patient: ficha.patient,
         doctor: usuario.displayName,
@@ -131,6 +133,7 @@ function atencion_paciente({ id }) {
         service: ficha.service,
         create: Date.now(),
       };
+      console.log("fichaData", fichaData);
       // insertarlo en la base de datos
       firebase.db
         .collection("health_centers")
@@ -154,7 +157,7 @@ function atencion_paciente({ id }) {
         .catch(function (error) {
           alert("Error adding document: ", error);
         });
-      return ;
+      return;
     }
     // validar
     if (
@@ -198,6 +201,8 @@ function atencion_paciente({ id }) {
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           const tiempo = doc.data().date;
+          //TODO AQUI CAMBIE
+          console.log("date", tiempo);
           citasData.push({
             id: doc.id,
             patient: doc.data().patient,

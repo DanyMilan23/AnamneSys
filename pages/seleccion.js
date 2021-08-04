@@ -1,4 +1,4 @@
-  import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -65,15 +65,19 @@ const seleccion = () => {
   const classes = useStyles();
   const [consultarDB, guardarConsultarDB] = useState(true);
   const [accesos, guardarAccesos] = useState(null);
-  const { datosUsuario,usuario } = useContext(FirebaseContext);
-  useEffect(() => {
-    debugger;
-    if (datosUsuario.access && consultarDB) {
-      guardarAccesos(datosUsuario.access);
-      guardarConsultarDB(false);
-    }
-  }, [datosUsuario],[usuario]);
-  if(Object.keys(datosUsuario).length === 0 )  return 'Cargando...';
+  const { datosUsuario, usuario } = useContext(FirebaseContext);
+  useEffect(
+    () => {
+      debugger;
+      if (datosUsuario.access && consultarDB) {
+        guardarAccesos(datosUsuario.access);
+        guardarConsultarDB(false);
+      }
+    },
+    [datosUsuario],
+    [usuario]
+  );
+  if (Object.keys(datosUsuario).length === 0) return "Cargando...";
 
   return (
     <Grid container component="main" className={classes.root}>

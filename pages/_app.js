@@ -4,7 +4,7 @@ import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../components/theme";
-import firebase,{FirebaseContext} from "../firebase/index";
+import firebase, { FirebaseContext } from "../firebase/index";
 import useAutenticacion from "../hooks/useAutenticacion";
 import useUsuario from "../hooks/useUsuario";
 
@@ -14,7 +14,7 @@ const MyApp = (props) => {
   const [datosUsuario, guardarDatosUsuario] = useState({});
 
   const usuario = useAutenticacion();
-  console.log(usuario);
+  console.log("usuario from _app", usuario);
   const { Component, pageProps } = props;
   useEffect(() => {
     // Remove the server-side injected CSS.
@@ -25,10 +25,10 @@ const MyApp = (props) => {
   });
 
   useEffect(() => {
-    if(usuario===null){
-      guardarDatosUsuario({})
-      guardarConsultarDB(true)
-      return
+    if (usuario === null) {
+      guardarDatosUsuario({});
+      guardarConsultarDB(true);
+      return;
     }
     if (usuario && consultarDB) {
       const obtenerDatos = async () => {
@@ -49,7 +49,7 @@ const MyApp = (props) => {
           });
       };
       obtenerDatos();
-      console.log(datosUsuario)
+      console.log(datosUsuario);
     }
   }, [usuario]);
   return (
